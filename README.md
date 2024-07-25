@@ -1,0 +1,2 @@
+# ManhuntEarthMain
+ManhuntEarthのために作ってるプラグインです
