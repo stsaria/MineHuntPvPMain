@@ -7,7 +7,7 @@ public final class ManhuntEarthMain extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        new Main();
+        new Main(this);
     }
 
     @Override

@@ -14,4 +14,13 @@ public class GamePlayer {
             player.sendMessage(message);
         }
     }
+    @Override
+    public boolean equals(Object obj){
+        if(obj==this) return true;
+        if(obj==null) return false;
+        if(!(obj instanceof GamePlayer)) return false;
+        GamePlayer gamePlayer = (GamePlayer) obj;
+        return this.bukkitPlayer.getUniqueId().equals(gamePlayer.bukkitPlayer.getUniqueId());
+    }
+
 }
