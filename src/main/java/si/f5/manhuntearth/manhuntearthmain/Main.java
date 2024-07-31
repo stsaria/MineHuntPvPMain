@@ -8,7 +8,10 @@ import java.util.List;
 
 public class Main {
     public Main(Plugin plugin) {
-        List<GamePlayer> playersList = new ArrayList<>();
-        Bukkit.getServer().getPluginManager().registerEvents(new AddNewPlayerToPlayersList(playersList),plugin);
+        HunterTeam hunterTeam = new HunterTeam();
+        RunnerTeam runnerTeam = new RunnerTeam();
+        SpectatorRole spectatorRole = new SpectatorRole();
+        GamePlayersList gamePlayersList = new GamePlayersList();
+        Bukkit.getServer().getPluginManager().registerEvents(new AddNewPlayerToPlayersList(gamePlayersList),plugin);
     }
 }
