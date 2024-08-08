@@ -7,11 +7,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+    GameState gameState;
+    HunterTeam hunterTeam;
+    RunnerTeam runnerTeam;
+    SpectatorRole spectatorRole;
+    GamePlayersList gamePlayersList;
+    Timer timer;
+    TeamDivider teamDivider;
+
     public Main(Plugin plugin) {
-        HunterTeam hunterTeam = new HunterTeam();
-        RunnerTeam runnerTeam = new RunnerTeam();
-        SpectatorRole spectatorRole = new SpectatorRole();
-        GamePlayersList gamePlayersList = new GamePlayersList();
+        gameState=GameState.NOT_STARTED;
+        hunterTeam = new HunterTeam();
+        runnerTeam = new RunnerTeam();
+        spectatorRole = new SpectatorRole();
+        gamePlayersList = new GamePlayersList();
         Bukkit.getServer().getPluginManager().registerEvents(new AddNewPlayerToPlayersList(gamePlayersList),plugin);
+        teamDivider = new TeamDivider(
+            gameState,
+            gamePlayersList,
+            new ArrayList<Role>(){
+                {
+                    add(hunterTeam);
+                    add(runnerTeam);
+                    add(spectatorRole);
+                }
+            }
+        );
+
     }
 }

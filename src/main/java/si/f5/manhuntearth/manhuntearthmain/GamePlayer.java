@@ -2,6 +2,7 @@ package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class GamePlayer {
     OfflinePlayer bukkitPlayer;
@@ -12,6 +13,12 @@ public class GamePlayer {
         if(bukkitPlayer.isOnline()) {
             Player player = (Player) bukkitPlayer;
             player.sendMessage(message);
+        }
+    }
+    public void SetItem(ItemStack itemStack,int slot) {
+        if(bukkitPlayer.isOnline()) {
+            Player player = (Player) bukkitPlayer;
+            player.getInventory().setItem(slot,itemStack);
         }
     }
     @Override

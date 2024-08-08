@@ -2,6 +2,7 @@ package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -24,6 +25,9 @@ public abstract class Role {
     void AddPlayer(GamePlayer gamePlayer){
         bukkitTeam.addPlayer(gamePlayer.bukkitPlayer);
         DirectionOnPlayerAdded(gamePlayer);
+    }
+    Material ColorBlock() {
+        return ChatColorToBlock.ChatColorToBlock(bukkitTeamColor());
     }
     abstract void DirectionOnPlayerAdded(GamePlayer addedPlayer);
     abstract String bukkitTeamName();
