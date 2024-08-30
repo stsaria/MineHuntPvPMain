@@ -14,6 +14,9 @@ public class AddNewPlayerToPlayersList implements Listener {
     }
     @EventHandler
     public void OnPlayerJoined(PlayerJoinEvent e) {
+        if(playersList==null) {
+            return;
+        }
         GamePlayer gamePlayer = new GamePlayer(e.getPlayer());
         if(this.playersList.contains(gamePlayer)){
             return;
