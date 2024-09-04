@@ -2,3 +2,6 @@ name: ManhuntEarthMain
 version: '${project.version}'
 main: si.f5.manhuntearth.manhuntearthmain.ManhuntEarthMain
 api-version: '1.20'
+commands:
+  start:
+    description: Start the game forcibly for debug or test play.

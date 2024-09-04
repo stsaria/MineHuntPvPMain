@@ -12,6 +12,7 @@ public abstract class Role {
     public Role() {
         ScoreboardManager scoreboardManager= Bukkit.getScoreboardManager();
         Scoreboard scoreboard=scoreboardManager.getMainScoreboard();
+        scoreboard.getTeam(bukkitTeamName()).unregister();
         bukkitTeam=scoreboard.registerNewTeam(bukkitTeamName());
         bukkitTeam.setAllowFriendlyFire(true);
         bukkitTeam.setCanSeeFriendlyInvisibles(true);
