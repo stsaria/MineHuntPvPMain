@@ -1,5 +1,7 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -34,5 +36,22 @@ public class GamePlayersList {
         for(; i<Number();i++) {
             role2.AddPlayer(GetGamePlayer(i));
         }
+    }
+    public void Refresh() {
+        for(int i=0;i<playersList.size();i++) {
+            playersList.remove(i);
+        }
+        for(Player player:Bukkit.getOnlinePlayers()) {
+            playersList.add(new GamePlayer(player));
+        }
+    }
+    @Override
+    public String toString() {
+        String string = "";
+        for(GamePlayer gamePlayer:playersList) {
+            string+=gamePlayer.GetName();
+            string+="\n";
+        }
+        return string;
     }
 }

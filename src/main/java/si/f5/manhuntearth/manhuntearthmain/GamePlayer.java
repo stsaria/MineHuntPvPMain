@@ -4,22 +4,27 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Objects;
+
 public class GamePlayer {
-    OfflinePlayer bukkitPlayer;
+    private OfflinePlayer bukkitPlayer;
     public GamePlayer(OfflinePlayer bukkitPlayer) {
         this.bukkitPlayer=bukkitPlayer;
     }
     public void SendMessage(String message) {
-        if(bukkitPlayer.isOnline()) {
-            Player player = (Player) bukkitPlayer;
+        if(getBukkitPlayer().isOnline()) {
+            Player player = (Player) getBukkitPlayer();
             player.sendMessage(message);
         }
     }
     public void SetItem(ItemStack itemStack,int slot) {
-        if(bukkitPlayer.isOnline()) {
-            Player player = (Player) bukkitPlayer;
+        if(getBukkitPlayer().isOnline()) {
+            Player player = (Player) getBukkitPlayer();
             player.getInventory().setItem(slot,itemStack);
         }
+    }
+    public String GetName() {
+        return getBukkitPlayer().getName();
     }
     @Override
     public boolean equals(Object obj){
@@ -27,7 +32,14 @@ public class GamePlayer {
         if(obj==null) return false;
         if(!(obj instanceof GamePlayer)) return false;
         GamePlayer gamePlayer = (GamePlayer) obj;
-        return this.bukkitPlayer.getUniqueId().equals(gamePlayer.bukkitPlayer.getUniqueId());
+        return this.getBukkitPlayer().getUniqueId().equals(gamePlayer.getBukkitPlayer().getUniqueId());
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getBukkitPlayer().getUniqueId());
     }
 
+    public OfflinePlayer getBukkitPlayer() {
+        return bukkitPlayer;
+    }
 }

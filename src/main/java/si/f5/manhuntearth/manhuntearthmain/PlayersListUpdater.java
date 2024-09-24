@@ -1,19 +1,19 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
 
-public class AddNewPlayerToPlayersList implements Listener {
+public class PlayersListUpdater implements Listener {
     List<GamePlayer> playersList;
-    public AddNewPlayerToPlayersList(GamePlayersList gamePlayersList) {
+    public PlayersListUpdater(GamePlayersList gamePlayersList) {
         this.playersList=gamePlayersList.playersList;
     }
     @EventHandler
-    public void OnPlayerJoined(PlayerJoinEvent e) {
+    public void OnPlayerJoin(PlayerJoinEvent e) {
         if(playersList==null) {
             return;
         }
@@ -22,6 +22,12 @@ public class AddNewPlayerToPlayersList implements Listener {
             return;
         }
         this.playersList.add(gamePlayer);
-        Bukkit.broadcastMessage(playersList.toString());
+    }
+    @EventHandler
+    public void OnPlayerQuit(PlayerQuitEvent e) {
+        if(playersList==null) {
+            return;
+        }
+        this.playersList.remove(new GamePlayer(e.getPlayer()));
     }
 }

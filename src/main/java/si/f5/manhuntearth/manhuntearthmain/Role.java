@@ -12,7 +12,9 @@ public abstract class Role {
     public Role() {
         ScoreboardManager scoreboardManager= Bukkit.getScoreboardManager();
         Scoreboard scoreboard=scoreboardManager.getMainScoreboard();
-        scoreboard.getTeam(bukkitTeamName()).unregister();
+        for(Team team:scoreboard.getTeams()) {
+            team.unregister();
+        }
         bukkitTeam=scoreboard.registerNewTeam(bukkitTeamName());
         bukkitTeam.setAllowFriendlyFire(true);
         bukkitTeam.setCanSeeFriendlyInvisibles(true);
@@ -24,7 +26,7 @@ public abstract class Role {
         bukkitTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
     }
     void AddPlayer(GamePlayer gamePlayer){
-        bukkitTeam.addPlayer(gamePlayer.bukkitPlayer);
+        bukkitTeam.addPlayer(gamePlayer.getBukkitPlayer());
         DirectionOnPlayerAdded(gamePlayer);
     }
     Material ColorBlock() {
