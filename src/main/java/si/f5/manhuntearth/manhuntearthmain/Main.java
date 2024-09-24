@@ -4,13 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Main {
+public class Main extends BukkitRunnable{
     HunterTeam hunterTeam;
     RunnerTeam runnerTeam;
     SpectatorRole spectatorRole;
     GamePlayersList gamePlayersList;
     Timer timer;
     Plugin plugin;
+    private int time;
+    GameState gameState;
 
     public Main(Plugin plugin) {
         this.plugin=plugin;
@@ -20,21 +22,11 @@ public class Main {
         gamePlayersList = new GamePlayersList();
         Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
         gamePlayersList.Refresh();
-        Sequence();
-    }
-    public void Sequence() {
-        new Sequence(gamePlayersList).runTaskTimer(plugin,0,0);
-    }
-}
-class Sequence extends BukkitRunnable {
-    private int time;
-    GameState gameState;
-    GamePlayersList gamePlayersList;
-    public Sequence(GamePlayersList gamePlayersList) {
-        this.gameState=GameState.BEFORE_THE_GAME;
-        this.gamePlayersList=gamePlayersList;
+        gameState=GameState.BEFORE_THE_GAME;
         time=0;
+        runTaskTimer(plugin,0,0);
     }
+
     @Override
     public void run() {
         if(time%100==0) {
