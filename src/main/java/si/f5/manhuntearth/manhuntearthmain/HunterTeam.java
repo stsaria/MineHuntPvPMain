@@ -10,17 +10,17 @@ public class HunterTeam extends GameTeam {
     }
 
     @Override
-    String bukkitTeamName() {
+    String BUKKIT_TEAM_NAME() {
         return "hunter";
     }
 
     @Override
-    ChatColor bukkitTeamColor() {
+    ChatColor BUKKIT_TEAM_COLOR() {
         return ChatColor.RED;
     }
 
     @Override
-    String bukkitTeamDisplayName() {
+    String BUKKIT_TEAM_DISPLAY_NAME() {
         return "鬼";
     }
 

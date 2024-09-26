@@ -5,29 +5,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.List;
-
 public class PlayersListUpdater implements Listener {
-    List<GamePlayer> playersList;
+    GamePlayersList gamePlayersList;
     public PlayersListUpdater(GamePlayersList gamePlayersList) {
-        this.playersList=gamePlayersList.playersList;
+        this.gamePlayersList=gamePlayersList;
     }
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent e) {
-        if(playersList==null) {
-            return;
-        }
-        GamePlayer gamePlayer = new GamePlayer(e.getPlayer());
-        if(this.playersList.contains(gamePlayer)){
-            return;
-        }
-        this.playersList.add(gamePlayer);
+        gamePlayersList.AddPlayer(e.getPlayer());
     }
     @EventHandler
     public void OnPlayerQuit(PlayerQuitEvent e) {
-        if(playersList==null) {
-            return;
-        }
-        this.playersList.remove(new GamePlayer(e.getPlayer()));
+        gamePlayersList.RemovePlayer(e.getPlayer());
     }
 }

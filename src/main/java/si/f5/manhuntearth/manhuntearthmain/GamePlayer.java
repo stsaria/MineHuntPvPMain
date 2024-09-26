@@ -17,11 +17,16 @@ public class GamePlayer {
             player.sendMessage(message);
         }
     }
-    public void SetItem(ItemStack itemStack,int slot) {
+    public void SetItem(GameItem item,int slot) {
         if(getBukkitPlayer().isOnline()) {
             Player player = (Player) getBukkitPlayer();
-            player.getInventory().setItem(slot,itemStack);
+            player.getInventory().setItem(slot,item.GetItemStack());
         }
+    }
+    public ItemStack GetItemInMainHand() {
+        if(!(getBukkitPlayer().isOnline())) throw new IllegalStateException("Couldn't get "+bukkitPlayer.getName()+"'s item in their main hand because they are offline");
+        Player player = (Player) getBukkitPlayer();
+        return player.getInventory().getItemInMainHand();
     }
     public String GetName() {
         return getBukkitPlayer().getName();

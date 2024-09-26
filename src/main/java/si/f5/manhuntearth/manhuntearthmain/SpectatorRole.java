@@ -10,17 +10,17 @@ public class SpectatorRole extends Role {
     }
 
     @Override
-    String bukkitTeamName() {
+    String BUKKIT_TEAM_NAME() {
         return "spectator";
     }
 
     @Override
-    ChatColor bukkitTeamColor() {
+    ChatColor BUKKIT_TEAM_COLOR() {
         return ChatColor.GRAY;
     }
 
     @Override
-    String bukkitTeamDisplayName() {
+    String BUKKIT_TEAM_DISPLAY_NAME() {
         return "観戦者";
     }
 }

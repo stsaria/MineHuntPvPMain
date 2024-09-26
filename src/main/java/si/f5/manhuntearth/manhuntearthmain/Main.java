@@ -13,6 +13,7 @@ public class Main extends BukkitRunnable{
     Plugin plugin;
     private int time;
     GameState gameState;
+    StartButton startButton;
 
     public Main(Plugin plugin) {
         this.plugin=plugin;
@@ -20,7 +21,9 @@ public class Main extends BukkitRunnable{
         runnerTeam = new RunnerTeam();
         spectatorRole = new SpectatorRole();
         gamePlayersList = new GamePlayersList();
+        startButton= new StartButton();
         Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(startButton,this.plugin);
         gamePlayersList.Refresh();
         gameState=GameState.BEFORE_THE_GAME;
         time=0;
@@ -31,6 +34,7 @@ public class Main extends BukkitRunnable{
     public void run() {
         if(time%100==0) {
             Bukkit.broadcastMessage(gamePlayersList.toString());
+            gamePlayersList.SetItemToAllPlayersInventory(startButton,4);
         }
         time++;
     }

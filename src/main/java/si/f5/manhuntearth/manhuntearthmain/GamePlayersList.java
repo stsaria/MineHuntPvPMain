@@ -13,9 +13,24 @@ public class GamePlayersList {
     public GamePlayersList() {
         this.playersList = new ArrayList<>();
     }
-    public void SetItemToAllPlayersInventory(ItemStack itemStack,int slot) {
+    public void AddPlayer(GamePlayer player) {
+        if(this.playersList.contains(player)) {
+            return;
+        }
+        this.playersList.add(player);
+    }
+    public void AddPlayer(Player player) {
+        AddPlayer(new GamePlayer(player));
+    }
+    public void RemovePlayer(GamePlayer player) {
+        this.playersList.remove(player);
+    }
+    public void RemovePlayer(Player player) {
+        RemovePlayer(new GamePlayer(player));
+    }
+    public void SetItemToAllPlayersInventory(GameItem item,int slot) {
         for (GamePlayer gamePlayer:playersList) {
-            gamePlayer.SetItem(itemStack,slot);
+            gamePlayer.SetItem(item,slot);
         }
     }
     private void Shuffle() {

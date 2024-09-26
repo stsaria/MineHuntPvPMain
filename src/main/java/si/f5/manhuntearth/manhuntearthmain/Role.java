@@ -15,12 +15,12 @@ public abstract class Role {
         for(Team team:scoreboard.getTeams()) {
             team.unregister();
         }
-        bukkitTeam=scoreboard.registerNewTeam(bukkitTeamName());
+        bukkitTeam=scoreboard.registerNewTeam(BUKKIT_TEAM_NAME());
         bukkitTeam.setAllowFriendlyFire(true);
         bukkitTeam.setCanSeeFriendlyInvisibles(true);
-        bukkitTeam.setColor(bukkitTeamColor());
-        bukkitTeam.setDisplayName(bukkitTeamDisplayName());
-        bukkitTeam.setPrefix(bukkitTeamColor()+"["+bukkitTeamDisplayName()+"]");
+        bukkitTeam.setColor(BUKKIT_TEAM_COLOR());
+        bukkitTeam.setDisplayName(BUKKIT_TEAM_DISPLAY_NAME());
+        bukkitTeam.setPrefix(BUKKIT_TEAM_COLOR()+"["+ BUKKIT_TEAM_DISPLAY_NAME()+"]");
         bukkitTeam.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.ALWAYS);
         bukkitTeam.setOption(Team.Option.DEATH_MESSAGE_VISIBILITY, Team.OptionStatus.ALWAYS);
         bukkitTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
@@ -30,10 +30,10 @@ public abstract class Role {
         DirectionOnPlayerAdded(gamePlayer);
     }
     Material ColorBlock() {
-        return ChatColorToBlock.ChatColorToBlock(bukkitTeamColor());
+        return ChatColorToBlock.ChatColorToBlock(BUKKIT_TEAM_COLOR());
     }
     abstract void DirectionOnPlayerAdded(GamePlayer addedPlayer);
-    abstract String bukkitTeamName();
-    abstract ChatColor bukkitTeamColor();
-    abstract String bukkitTeamDisplayName();
+    abstract String BUKKIT_TEAM_NAME();
+    abstract ChatColor BUKKIT_TEAM_COLOR();
+    abstract String BUKKIT_TEAM_DISPLAY_NAME();
 }

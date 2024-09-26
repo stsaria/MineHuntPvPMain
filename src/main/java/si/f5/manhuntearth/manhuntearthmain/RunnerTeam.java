@@ -10,17 +10,17 @@ public class RunnerTeam extends GameTeam {
     }
 
     @Override
-    String bukkitTeamName() {
+    String BUKKIT_TEAM_NAME() {
         return "runner";
     }
 
     @Override
-    ChatColor bukkitTeamColor() {
+    ChatColor BUKKIT_TEAM_COLOR() {
         return ChatColor.AQUA;
     }
 
     @Override
-    String bukkitTeamDisplayName() {
+    String BUKKIT_TEAM_DISPLAY_NAME() {
         return "逃走者";
     }
 }
