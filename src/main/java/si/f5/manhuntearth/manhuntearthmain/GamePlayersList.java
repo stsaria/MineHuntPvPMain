@@ -2,7 +2,6 @@ package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,33 +32,21 @@ public class GamePlayersList {
             gamePlayer.SetItem(item,slot);
         }
     }
-    private void Shuffle() {
-        Collections.shuffle(playersList);
-    }
-    private int Number() {
-        return playersList.size();
-    }
-    private GamePlayer GetGamePlayer(int index) {
-        return playersList.get(index);
+    public void SetItemToHostsInventory(GameItem item,int slot) {
+
     }
     public void TeamDivide(Role role1,Role role2) {
-        Shuffle();
+        ArrayList<GamePlayer> l = new ArrayList<>(playersList);
+        Collections.shuffle(l);
         int i;
-        for(i=0; i< Number()/2; i++) {
-            role1.AddPlayer(GetGamePlayer(i));
+        for (i=0;i<l.size()/2;i++) {
+            role1.AddPlayer(l.get(i));
         }
-        for(; i<Number();i++) {
-            role2.AddPlayer(GetGamePlayer(i));
-        }
-    }
-    public void Refresh() {
-        for(int i=0;i<playersList.size();i++) {
-            playersList.remove(i);
-        }
-        for(Player player:Bukkit.getOnlinePlayers()) {
-            playersList.add(new GamePlayer(player));
+        for(;i<l.size();i++) {
+            role2.AddPlayer(l.get(i));
         }
     }
+
     @Override
     public String toString() {
         String string = "";

@@ -3,6 +3,7 @@ package si.f5.manhuntearth.manhuntearthmain;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -12,9 +13,6 @@ public abstract class Role {
     public Role() {
         ScoreboardManager scoreboardManager= Bukkit.getScoreboardManager();
         Scoreboard scoreboard=scoreboardManager.getMainScoreboard();
-        for(Team team:scoreboard.getTeams()) {
-            team.unregister();
-        }
         bukkitTeam=scoreboard.registerNewTeam(BUKKIT_TEAM_NAME());
         bukkitTeam.setAllowFriendlyFire(true);
         bukkitTeam.setCanSeeFriendlyInvisibles(true);
@@ -28,6 +26,13 @@ public abstract class Role {
     void AddPlayer(GamePlayer gamePlayer){
         bukkitTeam.addPlayer(gamePlayer.getBukkitPlayer());
         DirectionOnPlayerAdded(gamePlayer);
+    }
+    public static void RemoveAllTeams() {
+        ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+        Scoreboard scoreboard = scoreboardManager.getMainScoreboard();
+        for(Team team:scoreboard.getTeams()) {
+            team.unregister();
+        }
     }
     Material ColorBlock() {
         return ChatColorToBlock.ChatColorToBlock(BUKKIT_TEAM_COLOR());
