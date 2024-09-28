@@ -1,10 +1,9 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
-import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,6 +16,7 @@ public abstract class GameItemButton extends GameItem implements Listener {
     public GameItemButton() {
         ItemMeta itemMeta = super.GetItemStack().getItemMeta();
         itemMeta.addEnchant(ENCHANTMENT_FOR_IDENTIFICATION,LEVEL_OF_ENCHANTMENT_FOR_IDENTIFICATION,true);
+        itemMeta.addEnchant(Enchantment.VANISHING_CURSE,1,true);
         super.GetItemStack().setItemMeta(itemMeta);
     }
     @EventHandler
@@ -26,8 +26,16 @@ public abstract class GameItemButton extends GameItem implements Listener {
         }
         Process(e);
     }
+    @EventHandler
+    public void OnDrop(PlayerDropItemEvent e) {
+        if(IsThisItem(e.getItemDrop().getItemStack())) {
+            e.setCancelled(true);
+        }
+    }
     private boolean hasThisItemInMainHand(GamePlayer player) {
-        ItemStack itemStack = player.GetItemInMainHand();
+        return IsThisItem(player.GetItemInMainHand());
+    }
+    private boolean IsThisItem(ItemStack itemStack) {
         if(itemStack.getType() != this.MATERIAL()) return false;
         if(!(itemStack.getItemMeta().getDisplayName().equals(this.NAME()))) return false;
         for(Map.Entry<Enchantment,Integer> entry:itemStack.getItemMeta().getEnchants().entrySet()) {

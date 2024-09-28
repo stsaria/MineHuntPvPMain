@@ -5,23 +5,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class GamePlayer {
-    private OfflinePlayer bukkitPlayer;
+    private final OfflinePlayer bukkitPlayer;
     public GamePlayer(OfflinePlayer bukkitPlayer) {
         this.bukkitPlayer=bukkitPlayer;
     }
     public void SendMessage(String message) {
-        if(getBukkitPlayer().isOnline()) {
-            Player player = (Player) getBukkitPlayer();
-            player.sendMessage(message);
-        }
+        getOnlinePlayer().ifPresent(p-> p.sendMessage(message));
     }
     public void SetItem(GameItem item,int slot) {
-        if(getBukkitPlayer().isOnline()) {
-            Player player = (Player) getBukkitPlayer();
-            player.getInventory().setItem(slot,item.GetItemStack());
-        }
+        getOnlinePlayer().ifPresent(p-> p.getInventory().setItem(slot, item.GetItemStack()));
+    }
+    public void Clear() {
+        getOnlinePlayer().ifPresent(p-> p.getInventory().clear());
     }
     public ItemStack GetItemInMainHand() {
         if(!(getBukkitPlayer().isOnline())) throw new IllegalStateException("Couldn't get "+bukkitPlayer.getName()+"'s item in their main hand because they are offline");
@@ -46,5 +44,12 @@ public class GamePlayer {
 
     public OfflinePlayer getBukkitPlayer() {
         return bukkitPlayer;
+    }
+    public Optional<Player> getOnlinePlayer() {
+        if(getBukkitPlayer().isOnline()) {
+            return Optional.of((Player)getBukkitPlayer());
+        } else {
+            return Optional.empty();
+        }
     }
 }

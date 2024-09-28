@@ -3,5 +3,24 @@ version: '${project.version}'
 main: si.f5.manhuntearth.manhuntearthmain.ManhuntEarthMain
 api-version: '1.20'
 commands:
-  start:
+  debug_start:
     description: Start the game forcibly for debug or test play.
+    permission: manhuntearthmain.debug
+    permission-message: You don't have a permission to use this command!
+  debug_stop:
+    description: Stop the game forcibly for debug or test play.
+    permission: manhuntearthmain.debug
+    permission-message: You don't have a permission to use this command!
+  debug_reset:
+    description: Reset the game forcibly for debug or test play.
+    permission: manhuntearthmain.debug
+    permission-message: You don't have a permission to use this command!
+  debug_gamestate:
+    description: Show GameState for debug or test play.
+    permission: manhuntearthmain.debug
+    permission-message: You don't have a permission to use this command!
+
+permissions:
+  manhuntearthmain.debug:
+    description: Required to use commands for debug.
+    default: op

@@ -1,11 +1,11 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class GamePlayersList {
     List<GamePlayer> playersList;
@@ -33,7 +33,10 @@ public class GamePlayersList {
         }
     }
     public void SetItemToHostsInventory(GameItem item,int slot) {
-
+        GetHost().ifPresent(v ->v.SetItem(item,slot));
+    }
+    public void ClearALl() {
+        playersList.forEach(GamePlayer::Clear);
     }
     public void TeamDivide(Role role1,Role role2) {
         ArrayList<GamePlayer> l = new ArrayList<>(playersList);
@@ -49,11 +52,17 @@ public class GamePlayersList {
 
     @Override
     public String toString() {
-        String string = "";
+        StringBuilder string = new StringBuilder();
         for(GamePlayer gamePlayer:playersList) {
-            string+=gamePlayer.GetName();
-            string+="\n";
+            string.append(gamePlayer.GetName());
+            string.append("\n");
         }
-        return string;
+        return string.toString();
+    }
+    private Optional<GamePlayer> GetHost() {
+        if(playersList.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(playersList.get(0));
     }
 }
