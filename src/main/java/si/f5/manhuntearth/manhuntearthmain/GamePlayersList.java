@@ -1,6 +1,8 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.entity.Player;
+import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
+import si.f5.manhuntearth.manhuntearthmain.roles.Role;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +29,7 @@ public class GamePlayersList {
     public void RemovePlayer(Player player) {
         RemovePlayer(new GamePlayer(player));
     }
-    public void SetItemToAllPlayersInventory(GameItem item,int slot) {
+    public void SetItemToAllPlayersInventory(GameItem item, int slot) {
         for (GamePlayer gamePlayer:playersList) {
             gamePlayer.SetItem(item,slot);
         }
@@ -38,7 +40,7 @@ public class GamePlayersList {
     public void ClearALl() {
         playersList.forEach(GamePlayer::Clear);
     }
-    public void TeamDivide(Role role1,Role role2) {
+    public void TeamDivide(Role role1, Role role2) {
         ArrayList<GamePlayer> l = new ArrayList<>(playersList);
         Collections.shuffle(l);
         int i;

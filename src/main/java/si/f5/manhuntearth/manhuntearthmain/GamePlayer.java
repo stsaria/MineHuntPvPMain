@@ -3,6 +3,7 @@ package si.f5.manhuntearth.manhuntearthmain;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -15,7 +16,7 @@ public class GamePlayer {
     public void SendMessage(String message) {
         getOnlinePlayer().ifPresent(p-> p.sendMessage(message));
     }
-    public void SetItem(GameItem item,int slot) {
+    public void SetItem(GameItem item, int slot) {
         getOnlinePlayer().ifPresent(p-> p.getInventory().setItem(slot, item.GetItemStack()));
     }
     public void Clear() {

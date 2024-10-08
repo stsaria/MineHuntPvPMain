@@ -1,8 +1,6 @@
-package si.f5.manhuntearth.manhuntearthmain;
+package si.f5.manhuntearth.manhuntearthmain.items;
 
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

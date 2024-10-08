@@ -1,8 +1,9 @@
-package si.f5.manhuntearth.manhuntearthmain;
+package si.f5.manhuntearth.manhuntearthmain.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import si.f5.manhuntearth.manhuntearthmain.Main;
 
 public class debug_stopCommand implements CommandExecutor {
     @Override

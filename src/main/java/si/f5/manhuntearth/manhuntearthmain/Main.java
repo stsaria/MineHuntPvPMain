@@ -3,6 +3,15 @@ package si.f5.manhuntearth.manhuntearthmain;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import si.f5.manhuntearth.manhuntearthmain.commands.debug_gamestateCommand;
+import si.f5.manhuntearth.manhuntearthmain.commands.debug_resetCommand;
+import si.f5.manhuntearth.manhuntearthmain.commands.debug_startCommand;
+import si.f5.manhuntearth.manhuntearthmain.commands.debug_stopCommand;
+import si.f5.manhuntearth.manhuntearthmain.items.StartButton;
+import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
+import si.f5.manhuntearth.manhuntearthmain.roles.Role;
+import si.f5.manhuntearth.manhuntearthmain.roles.RunnerTeam;
+import si.f5.manhuntearth.manhuntearthmain.roles.SpectatorRole;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;

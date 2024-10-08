@@ -1,6 +1,7 @@
-package si.f5.manhuntearth.manhuntearthmain;
+package si.f5.manhuntearth.manhuntearthmain.roles;
 
 import org.bukkit.ChatColor;
+import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 
 public class SpectatorRole extends Role {
 
@@ -15,12 +16,12 @@ public class SpectatorRole extends Role {
     }
 
     @Override
-    ChatColor BUKKIT_TEAM_COLOR() {
+    public ChatColor BUKKIT_TEAM_COLOR() {
         return ChatColor.GRAY;
     }
 
     @Override
-    String BUKKIT_TEAM_DISPLAY_NAME() {
+    public String BUKKIT_TEAM_DISPLAY_NAME() {
         return "観戦者";
     }
 }

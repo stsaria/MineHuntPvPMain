@@ -1,12 +1,11 @@
-package si.f5.manhuntearth.manhuntearthmain;
+package si.f5.manhuntearth.manhuntearthmain.roles;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 
 public abstract class Role {
     Team bukkitTeam;
@@ -23,7 +22,7 @@ public abstract class Role {
         bukkitTeam.setOption(Team.Option.DEATH_MESSAGE_VISIBILITY, Team.OptionStatus.ALWAYS);
         bukkitTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
     }
-    void AddPlayer(GamePlayer gamePlayer){
+    public void AddPlayer(GamePlayer gamePlayer){
         bukkitTeam.addPlayer(gamePlayer.getBukkitPlayer());
         DirectionOnPlayerAdded(gamePlayer);
     }
@@ -36,6 +35,6 @@ public abstract class Role {
     }
     abstract void DirectionOnPlayerAdded(GamePlayer addedPlayer);
     abstract String BUKKIT_TEAM_NAME();
-    abstract ChatColor BUKKIT_TEAM_COLOR();
-    abstract String BUKKIT_TEAM_DISPLAY_NAME();
+    public abstract ChatColor BUKKIT_TEAM_COLOR();
+    public abstract String BUKKIT_TEAM_DISPLAY_NAME();
 }

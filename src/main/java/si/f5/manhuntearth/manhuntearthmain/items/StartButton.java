@@ -1,10 +1,8 @@
-package si.f5.manhuntearth.manhuntearthmain;
+package si.f5.manhuntearth.manhuntearthmain.items;
 
 import org.bukkit.Material;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
+import si.f5.manhuntearth.manhuntearthmain.Main;
 
 import java.util.ArrayList;
 import java.util.Arrays;

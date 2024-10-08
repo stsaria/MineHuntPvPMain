@@ -1,4 +1,4 @@
-package si.f5.manhuntearth.manhuntearthmain;
+package si.f5.manhuntearth.manhuntearthmain.items;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 
 import java.util.Map;
 
