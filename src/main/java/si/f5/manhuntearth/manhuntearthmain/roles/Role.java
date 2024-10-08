@@ -2,6 +2,8 @@ package si.f5.manhuntearth.manhuntearthmain.roles;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
@@ -22,18 +24,27 @@ public abstract class Role {
         bukkitTeam.setOption(Team.Option.DEATH_MESSAGE_VISIBILITY, Team.OptionStatus.ALWAYS);
         bukkitTeam.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
     }
-    public void AddPlayer(GamePlayer gamePlayer){
+    final public void AddPlayer(GamePlayer gamePlayer){
         bukkitTeam.addPlayer(gamePlayer.getBukkitPlayer());
-        DirectionOnPlayerAdded(gamePlayer);
+        OnPlayerAdded(gamePlayer);
     }
-    public static void RemoveAllTeams() {
+    final public boolean HasPlayer(GamePlayer gamePlayer) {
+        return HasPlayer(gamePlayer.getBukkitPlayer());
+    }
+    final public boolean HasPlayer(OfflinePlayer player) {
+        return bukkitTeam.hasPlayer(player);
+    }
+    final public int Size() {
+        return bukkitTeam.getSize();
+    }
+    final public static void RemoveAllTeams() {
         ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
         Scoreboard scoreboard = scoreboardManager.getMainScoreboard();
         for(Team team:scoreboard.getTeams()) {
             team.unregister();
         }
     }
-    abstract void DirectionOnPlayerAdded(GamePlayer addedPlayer);
+    abstract void OnPlayerAdded(GamePlayer addedPlayer);
     abstract String BUKKIT_TEAM_NAME();
     public abstract ChatColor BUKKIT_TEAM_COLOR();
     public abstract String BUKKIT_TEAM_DISPLAY_NAME();

@@ -1,13 +1,14 @@
 package si.f5.manhuntearth.manhuntearthmain.roles;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 
 public class SpectatorRole extends Role {
 
     @Override
-    void DirectionOnPlayerAdded(GamePlayer addedPlayer) {
-        addedPlayer.SendMessage("観戦者になりました。");
+    void OnPlayerAdded(GamePlayer addedPlayer) {
+        addedPlayer.SetGameMode(GameMode.SPECTATOR);
     }
 
     @Override

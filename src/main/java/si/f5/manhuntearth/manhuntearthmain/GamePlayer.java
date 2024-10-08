@@ -1,5 +1,6 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +27,9 @@ public class GamePlayer {
         if(!(getBukkitPlayer().isOnline())) throw new IllegalStateException("Couldn't get "+bukkitPlayer.getName()+"'s item in their main hand because they are offline");
         Player player = (Player) getBukkitPlayer();
         return player.getInventory().getItemInMainHand();
+    }
+    public void SetGameMode(GameMode gameMode) {
+        getOnlinePlayer().ifPresent(p-> p.setGameMode(gameMode));
     }
     public String GetName() {
         return getBukkitPlayer().getName();
