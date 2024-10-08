@@ -7,6 +7,7 @@ import si.f5.manhuntearth.manhuntearthmain.commands.debug_gamestateCommand;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_resetCommand;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_startCommand;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_stopCommand;
+import si.f5.manhuntearth.manhuntearthmain.items.CarvedPumpkin;
 import si.f5.manhuntearth.manhuntearthmain.items.StartButton;
 import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.Role;
@@ -25,6 +26,7 @@ public class Main extends BukkitRunnable{
     JavaPlugin plugin;
     private int time;
     private int timeLimit;
+    private int hunterWaitingTime;
     GameState gameState;
     StartButton startButton;
     BossBarTimer bossBarTimer;
@@ -36,6 +38,7 @@ public class Main extends BukkitRunnable{
     public static final int SECOND=20;
     public static final int MINUTES=60*SECOND;
     private static final int DEFAULT_TIME_LIMIT =30*MINUTES;
+    private static final int HUNTER_WAITING_TIME_LIMIT = 30*SECOND;
 
     public Main(JavaPlugin plugin) {
         this.plugin=plugin;
@@ -44,7 +47,8 @@ public class Main extends BukkitRunnable{
         runnerTeam = new RunnerTeam();
         spectatorRole = new SpectatorRole();
         gamePlayersList = new GamePlayersList();
-        victoryJudge = new VictoryJudge(gamePlayersList,hunterTeam,runnerTeam,spectatorRole);
+        gameState=GameState.BEFORE_THE_GAME;
+        victoryJudge = new VictoryJudge(gamePlayersList,hunterTeam,runnerTeam,spectatorRole,gameState);
         Bukkit.getServer().getPluginManager().registerEvents(victoryJudge,this.plugin);
         Objects.requireNonNull(plugin.getCommand("debug_start")).setExecutor(new debug_startCommand());
         Objects.requireNonNull(plugin.getCommand("debug_stop")).setExecutor(new debug_stopCommand());
@@ -53,7 +57,6 @@ public class Main extends BukkitRunnable{
         startButton= new StartButton();
         Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
         Bukkit.getServer().getPluginManager().registerEvents(startButton,this.plugin);
-        gameState=GameState.BEFORE_THE_GAME;
         runTaskTimer(plugin,0,0);
     }
     public static void StartFlag() {
@@ -83,6 +86,9 @@ public class Main extends BukkitRunnable{
         if(gameState==GameState.BEFORE_THE_GAME) {
             BeforeTheGame();
         }
+        else if(gameState==GameState.IN_HUNTER_WAITING_TIME) {
+            InHunterWaitingTime();
+        }
         else if(gameState==GameState.IN_THE_GAME) {
             InTheGame();
         }
@@ -92,13 +98,22 @@ public class Main extends BukkitRunnable{
     }
     private void Start() {
         startFlag.set(false);
+        gameState=GameState.IN_HUNTER_WAITING_TIME;
+        Bukkit.broadcastMessage("スタート");
+        gamePlayersList.TeamDivide(hunterTeam,runnerTeam);
+        gamePlayersList.ClearALlPlayers();
+        gamePlayersList.ClearEffectsAllPlayers();
+        gamePlayersList.SetHealthMaxAllPlayers();
+        gamePlayersList.SetFoodLevelMaxAllPlayers();
+        gamePlayersList.SetItemToHeadOfPlayersInTeam(hunterTeam,new CarvedPumpkin());
+        hunterWaitingTime=HUNTER_WAITING_TIME_LIMIT;
+        bossBarTimer = new BossBarTimer(gamePlayersList);
+    }
+    private void FinishHunterWaitingTime() {
         gameState=GameState.IN_THE_GAME;
         timeLimit= (customTimeLimit.get()==0) ? (DEFAULT_TIME_LIMIT) : (customTimeLimit.get());
         time=timeLimit;
-        Bukkit.broadcastMessage("スタート");
-        gamePlayersList.TeamDivide(hunterTeam,runnerTeam);
-        gamePlayersList.ClearALl();
-        bossBarTimer = new BossBarTimer(gamePlayersList);
+        gamePlayersList.ClearPlayersInTeam(hunterTeam);
     }
     private void Stop() {
         stopFlag.set(false);
@@ -115,6 +130,13 @@ public class Main extends BukkitRunnable{
     }
     private void BeforeTheGame() {
         gamePlayersList.SetItemToHostsInventory(startButton,4);
+    }
+    private void InHunterWaitingTime() {
+        bossBarTimer.Update(HUNTER_WAITING_TIME_LIMIT,hunterWaitingTime,false);
+        hunterWaitingTime--;
+        if(hunterWaitingTime<=0) {
+            FinishHunterWaitingTime();
+        }
     }
     private void InTheGame() {
         bossBarTimer.Update(timeLimit,time, time % 100 == 0);

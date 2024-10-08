@@ -37,8 +37,26 @@ public class GamePlayersList {
     public void SetItemToHostsInventory(GameItem item,int slot) {
         GetHost().ifPresent(v ->v.SetItem(item,slot));
     }
-    public void ClearALl() {
+    public void SetItemToPlayersInTeam(Role role, GameItem item, int slot) {
+        playersList.stream().filter(p-> role.HasPlayer(p)).forEach(p-> p.SetItem(item,slot));
+    }
+    public void SetItemToHeadOfPlayersInTeam(Role role, GameItem item) {
+        playersList.stream().filter(p-> role.HasPlayer(p)).forEach(p-> p.SetItemToHead(item));
+    }
+    public void ClearALlPlayers() {
         playersList.forEach(GamePlayer::Clear);
+    }
+    public void ClearPlayersInTeam(Role role) {
+        playersList.stream().filter(p-> role.HasPlayer(p)).forEach(GamePlayer::Clear);
+    }
+    public void ClearEffectsAllPlayers() {
+        playersList.forEach(GamePlayer::ClearEffects);
+    }
+    public void SetHealthMaxAllPlayers() {
+        playersList.forEach(GamePlayer::SetHealthMax);
+    }
+    public void SetFoodLevelMaxAllPlayers() {
+        playersList.forEach(GamePlayer::SetFoodLevelMax);
     }
     public void TeamDivide(Role role1, Role role2) {
         ArrayList<GamePlayer> l = new ArrayList<>(playersList);

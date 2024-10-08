@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class GameItemButton extends GameItem implements Listener {
     final Enchantment ENCHANTMENT_FOR_IDENTIFICATION=Enchantment.UNBREAKING;
@@ -45,6 +46,10 @@ public abstract class GameItemButton extends GameItem implements Listener {
             }
         }
         return false;
+    }
+    @Override
+    public Optional<Map<Enchantment, Integer>> ENCHANTMENT() {
+        return Optional.empty();
     }
     abstract protected void Process(PlayerInteractEvent e);
 }

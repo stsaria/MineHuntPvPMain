@@ -16,11 +16,13 @@ public class VictoryJudge implements Listener {
     HunterTeam hunterTeam;
     RunnerTeam runnerTeam;
     SpectatorRole spectatorRole;
-    public VictoryJudge (GamePlayersList gamePlayersList, HunterTeam hunterTeam, RunnerTeam runnerTeam, SpectatorRole spectatorRole) {
+    final GameState gameState;
+    public VictoryJudge (GamePlayersList gamePlayersList, HunterTeam hunterTeam, RunnerTeam runnerTeam, SpectatorRole spectatorRole,final GameState gameState) {
         this.gamePlayersList=gamePlayersList;
         this.hunterTeam=hunterTeam;
         this.runnerTeam=runnerTeam;
         this.spectatorRole=spectatorRole;
+        this.gameState=gameState;
     }
     private void GameOver(GameTeam winningTeam) {
         Main.StopFlag();
@@ -30,18 +32,22 @@ public class VictoryJudge implements Listener {
     }
     @EventHandler
     public void onRunnerEntersPortal(PlayerPortalEvent e) {
-        e.setCancelled(true);
-        if(runnerTeam.HasPlayer(e.getPlayer())){
-            GameOver(runnerTeam);
+        if(gameState==GameState.IN_THE_GAME){
+            e.setCancelled(true);
+            if(runnerTeam.HasPlayer(e.getPlayer())){
+                GameOver(runnerTeam);
+            }
         }
     }
     @EventHandler
     public void onPlayerBelongsToEitherTeamQuit(PlayerQuitEvent e) {
-        onDecreaseInPlayers(new GamePlayer(e.getPlayer()));
+        if(gameState==GameState.IN_THE_GAME)
+            onDecreaseInPlayers(new GamePlayer(e.getPlayer()));
     }
     @EventHandler
     public void onPlayerBelongsToEitherTeamDie(PlayerDeathEvent e) {
-        onDecreaseInPlayers(new GamePlayer(e.getEntity()));
+        if(gameState==GameState.IN_THE_GAME)
+            onDecreaseInPlayers(new GamePlayer(e.getEntity()));
     }
     public void onTimeIsUp() {
         GameOver(hunterTeam);

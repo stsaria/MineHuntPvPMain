@@ -2,6 +2,7 @@ package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
@@ -20,8 +21,31 @@ public class GamePlayer {
     public void SetItem(GameItem item, int slot) {
         getOnlinePlayer().ifPresent(p-> p.getInventory().setItem(slot, item.GetItemStack()));
     }
+    public void SetItemToHead(GameItem item) {
+        getOnlinePlayer().ifPresent(p-> p.getInventory().setHelmet(item.GetItemStack()));
+    }
     public void Clear() {
         getOnlinePlayer().ifPresent(p-> p.getInventory().clear());
+    }
+    public void ClearEffects() {
+        getOnlinePlayer().ifPresent(
+                p-> p.getActivePotionEffects().forEach(
+                        e->p.removePotionEffect(e.getType())
+                )
+        );
+    }
+    public void SetHealthMax() {
+        getOnlinePlayer().ifPresent(
+                p-> p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue())
+        );
+    }
+    public void SetFoodLevelMax() {
+        getOnlinePlayer().ifPresent(p->
+            {
+                p.setFoodLevel(20);
+                p.setSaturation(20);
+            }
+        );
     }
     public ItemStack GetItemInMainHand() {
         if(!(getBukkitPlayer().isOnline())) throw new IllegalStateException("Couldn't get "+bukkitPlayer.getName()+"'s item in their main hand because they are offline");
