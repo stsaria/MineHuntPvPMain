@@ -34,9 +34,6 @@ public abstract class Role {
             team.unregister();
         }
     }
-    Material ColorBlock() {
-        return ChatColorToBlock.ChatColorToBlock(BUKKIT_TEAM_COLOR());
-    }
     abstract void DirectionOnPlayerAdded(GamePlayer addedPlayer);
     abstract String BUKKIT_TEAM_NAME();
     abstract ChatColor BUKKIT_TEAM_COLOR();
