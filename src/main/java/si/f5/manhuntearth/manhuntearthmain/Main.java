@@ -13,6 +13,7 @@ import si.f5.manhuntearth.manhuntearthmain.roles.Role;
 import si.f5.manhuntearth.manhuntearthmain.roles.RunnerTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.SpectatorRole;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,7 +35,7 @@ public class Main extends BukkitRunnable{
     private static final AtomicInteger customTimeLimit=new AtomicInteger(0);
     public static final int SECOND=20;
     public static final int MINUTES=60*SECOND;
-    private static final int DEFAULT_TIME_LIMIT =3*MINUTES;
+    private static final int DEFAULT_TIME_LIMIT =30*MINUTES;
 
     public Main(JavaPlugin plugin) {
         this.plugin=plugin;
@@ -45,10 +46,10 @@ public class Main extends BukkitRunnable{
         gamePlayersList = new GamePlayersList();
         victoryJudge = new VictoryJudge(gamePlayersList,hunterTeam,runnerTeam,spectatorRole);
         Bukkit.getServer().getPluginManager().registerEvents(victoryJudge,this.plugin);
-        plugin.getCommand("debug_start").setExecutor(new debug_startCommand());
-        plugin.getCommand("debug_stop").setExecutor(new debug_stopCommand());
-        plugin.getCommand("debug_reset").setExecutor(new debug_resetCommand());
-        plugin.getCommand("debug_gamestate").setExecutor(new debug_gamestateCommand(gameState));
+        Objects.requireNonNull(plugin.getCommand("debug_start")).setExecutor(new debug_startCommand());
+        Objects.requireNonNull(plugin.getCommand("debug_stop")).setExecutor(new debug_stopCommand());
+        Objects.requireNonNull(plugin.getCommand("debug_reset")).setExecutor(new debug_resetCommand());
+        Objects.requireNonNull(plugin.getCommand("debug_gamestate")).setExecutor(new debug_gamestateCommand(gameState));
         startButton= new StartButton();
         Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
         Bukkit.getServer().getPluginManager().registerEvents(startButton,this.plugin);
