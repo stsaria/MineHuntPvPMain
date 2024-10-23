@@ -32,20 +32,18 @@ public class VictoryJudge implements Listener {
     public void onRunnerEntersPortal(PlayerPortalEvent e) {
         if(Main.GetGameState()==GameState.IN_THE_GAME){
             e.setCancelled(true);
-            if(runnerTeam.HasPlayer(e.getPlayer())){
+            if(runnerTeam.Contains(e.getPlayer())){
                 GameOver(runnerTeam);
             }
         }
     }
     @EventHandler
     public void onPlayerBelongsToEitherTeamQuit(PlayerQuitEvent e) {
-        Bukkit.broadcastMessage(Main.GetGameState().toString());
         if(Main.GetGameState()==GameState.IN_THE_GAME)
             onDecreaseInPlayers(new GamePlayer(e.getPlayer()));
     }
     @EventHandler
     public void onPlayerBelongsToEitherTeamDie(PlayerDeathEvent e) {
-        Bukkit.broadcastMessage(Main.GetGameState().toString());
         if(Main.GetGameState()==GameState.IN_THE_GAME)
             onDecreaseInPlayers(new GamePlayer(e.getEntity()));
     }

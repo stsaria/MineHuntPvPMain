@@ -5,6 +5,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
 
 import java.util.Objects;
@@ -14,6 +16,9 @@ public class GamePlayer {
     private final OfflinePlayer bukkitPlayer;
     public GamePlayer(OfflinePlayer bukkitPlayer) {
         this.bukkitPlayer=bukkitPlayer;
+    }
+    public static GamePlayer New(OfflinePlayer bukkitPlayer) {
+        return new GamePlayer(bukkitPlayer);
     }
     public void SendMessage(String message) {
         getOnlinePlayer().ifPresent(p-> p.sendMessage(message));
@@ -27,6 +32,9 @@ public class GamePlayer {
     public void Clear() {
         getOnlinePlayer().ifPresent(p-> p.getInventory().clear());
     }
+    public void AddEffect(PotionEffectType type,int duration,int amplifier,boolean particles) {
+        getOnlinePlayer().ifPresent(p-> p.addPotionEffect(new PotionEffect(type,duration,amplifier,false,particles)));
+    }
     public void ClearEffects() {
         getOnlinePlayer().ifPresent(
                 p-> p.getActivePotionEffects().forEach(
@@ -36,7 +44,7 @@ public class GamePlayer {
     }
     public void SetHealthMax() {
         getOnlinePlayer().ifPresent(
-                p-> p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue())
+                p-> p.setHealth(Objects.requireNonNull(p.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getBaseValue())
         );
     }
     public void SetFoodLevelMax() {

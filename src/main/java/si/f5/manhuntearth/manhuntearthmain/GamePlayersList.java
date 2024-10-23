@@ -37,17 +37,8 @@ public class GamePlayersList {
     public void SetItemToHostsInventory(GameItem item,int slot) {
         GetHost().ifPresent(v ->v.SetItem(item,slot));
     }
-    public void SetItemToPlayersInTeam(Role role, GameItem item, int slot) {
-        playersList.stream().filter(p-> role.HasPlayer(p)).forEach(p-> p.SetItem(item,slot));
-    }
-    public void SetItemToHeadOfPlayersInTeam(Role role, GameItem item) {
-        playersList.stream().filter(p-> role.HasPlayer(p)).forEach(p-> p.SetItemToHead(item));
-    }
     public void ClearALlPlayers() {
         playersList.forEach(GamePlayer::Clear);
-    }
-    public void ClearPlayersInTeam(Role role) {
-        playersList.stream().filter(p-> role.HasPlayer(p)).forEach(GamePlayer::Clear);
     }
     public void ClearEffectsAllPlayers() {
         playersList.forEach(GamePlayer::ClearEffects);
@@ -58,10 +49,10 @@ public class GamePlayersList {
     public void SetFoodLevelMaxAllPlayers() {
         playersList.forEach(GamePlayer::SetFoodLevelMax);
     }
-    public void TeamDivide(Role role1, Role role2, boolean allPlayersIntoRole2) {
+    public void TeamDivide(Role role1, Role role2, boolean allPlayersIntoRole1) {
         ArrayList<GamePlayer> l = new ArrayList<>(playersList);
-        if(allPlayersIntoRole2) {
-            l.forEach(p-> role2.AddPlayer(p));
+        if(allPlayersIntoRole1) {
+            l.forEach(role1::AddPlayer);
             return;
         }
         Collections.shuffle(l);
