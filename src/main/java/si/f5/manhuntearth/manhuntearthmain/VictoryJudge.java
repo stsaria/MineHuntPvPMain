@@ -16,13 +16,11 @@ public class VictoryJudge implements Listener {
     HunterTeam hunterTeam;
     RunnerTeam runnerTeam;
     SpectatorRole spectatorRole;
-    final GameState gameState;
-    public VictoryJudge (GamePlayersList gamePlayersList, HunterTeam hunterTeam, RunnerTeam runnerTeam, SpectatorRole spectatorRole,final GameState gameState) {
+    public VictoryJudge (GamePlayersList gamePlayersList, HunterTeam hunterTeam, RunnerTeam runnerTeam, SpectatorRole spectatorRole) {
         this.gamePlayersList=gamePlayersList;
         this.hunterTeam=hunterTeam;
         this.runnerTeam=runnerTeam;
         this.spectatorRole=spectatorRole;
-        this.gameState=gameState;
     }
     private void GameOver(GameTeam winningTeam) {
         Main.StopFlag();
@@ -32,7 +30,7 @@ public class VictoryJudge implements Listener {
     }
     @EventHandler
     public void onRunnerEntersPortal(PlayerPortalEvent e) {
-        if(gameState==GameState.IN_THE_GAME){
+        if(Main.GetGameState()==GameState.IN_THE_GAME){
             e.setCancelled(true);
             if(runnerTeam.HasPlayer(e.getPlayer())){
                 GameOver(runnerTeam);
@@ -41,12 +39,14 @@ public class VictoryJudge implements Listener {
     }
     @EventHandler
     public void onPlayerBelongsToEitherTeamQuit(PlayerQuitEvent e) {
-        if(gameState==GameState.IN_THE_GAME)
+        Bukkit.broadcastMessage(Main.GetGameState().toString());
+        if(Main.GetGameState()==GameState.IN_THE_GAME)
             onDecreaseInPlayers(new GamePlayer(e.getPlayer()));
     }
     @EventHandler
     public void onPlayerBelongsToEitherTeamDie(PlayerDeathEvent e) {
-        if(gameState==GameState.IN_THE_GAME)
+        Bukkit.broadcastMessage(Main.GetGameState().toString());
+        if(Main.GetGameState()==GameState.IN_THE_GAME)
             onDecreaseInPlayers(new GamePlayer(e.getEntity()));
     }
     public void onTimeIsUp() {

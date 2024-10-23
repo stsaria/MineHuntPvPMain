@@ -58,8 +58,12 @@ public class GamePlayersList {
     public void SetFoodLevelMaxAllPlayers() {
         playersList.forEach(GamePlayer::SetFoodLevelMax);
     }
-    public void TeamDivide(Role role1, Role role2) {
+    public void TeamDivide(Role role1, Role role2, boolean allPlayersIntoRole2) {
         ArrayList<GamePlayer> l = new ArrayList<>(playersList);
+        if(allPlayersIntoRole2) {
+            l.forEach(p-> role2.AddPlayer(p));
+            return;
+        }
         Collections.shuffle(l);
         int i;
         for (i=0;i<l.size()/2;i++) {

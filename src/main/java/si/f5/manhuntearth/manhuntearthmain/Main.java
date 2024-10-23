@@ -27,7 +27,7 @@ public class Main extends BukkitRunnable{
     private int time;
     private int timeLimit;
     private int hunterWaitingTime;
-    GameState gameState;
+    private static GameState gameState;
     StartButton startButton;
     BossBarTimer bossBarTimer;
     VictoryJudge victoryJudge;
@@ -35,6 +35,7 @@ public class Main extends BukkitRunnable{
     private static final AtomicBoolean stopFlag=new AtomicBoolean(false);
     private static final AtomicBoolean resetFlag=new AtomicBoolean(false);
     private static final AtomicInteger customTimeLimit=new AtomicInteger(0);
+    private static final AtomicBoolean allPlayersIntoHunterTeamFlag =new AtomicBoolean(false);
     public static final int SECOND=20;
     public static final int MINUTES=60*SECOND;
     private static final int DEFAULT_TIME_LIMIT =30*MINUTES;
@@ -48,8 +49,9 @@ public class Main extends BukkitRunnable{
         spectatorRole = new SpectatorRole();
         gamePlayersList = new GamePlayersList();
         gameState=GameState.BEFORE_THE_GAME;
-        victoryJudge = new VictoryJudge(gamePlayersList,hunterTeam,runnerTeam,spectatorRole,gameState);
+        victoryJudge = new VictoryJudge(gamePlayersList,hunterTeam,runnerTeam,spectatorRole);
         Bukkit.getServer().getPluginManager().registerEvents(victoryJudge,this.plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new AutoShutdowner(),this.plugin);
         Objects.requireNonNull(plugin.getCommand("debug_start")).setExecutor(new debug_startCommand());
         Objects.requireNonNull(plugin.getCommand("debug_stop")).setExecutor(new debug_stopCommand());
         Objects.requireNonNull(plugin.getCommand("debug_reset")).setExecutor(new debug_resetCommand());
@@ -58,6 +60,9 @@ public class Main extends BukkitRunnable{
         Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
         Bukkit.getServer().getPluginManager().registerEvents(startButton,this.plugin);
         runTaskTimer(plugin,0,0);
+    }
+    public static GameState GetGameState() {
+        return gameState;
     }
     public static void StartFlag() {
         startFlag.set(true);
@@ -70,6 +75,9 @@ public class Main extends BukkitRunnable{
     }
     public static void CustomTimeLimit(int timeLimit) {
         customTimeLimit.set(timeLimit);
+    }
+    public static void AllPlayersIntoHunterTeamFlag(){
+        allPlayersIntoHunterTeamFlag.set(true);
     }
 
     @Override
@@ -100,7 +108,8 @@ public class Main extends BukkitRunnable{
         startFlag.set(false);
         gameState=GameState.IN_HUNTER_WAITING_TIME;
         Bukkit.broadcastMessage("スタート");
-        gamePlayersList.TeamDivide(hunterTeam,runnerTeam);
+        gamePlayersList.TeamDivide(hunterTeam,runnerTeam, allPlayersIntoHunterTeamFlag.get());
+        allPlayersIntoHunterTeamFlag.set(false);
         gamePlayersList.ClearALlPlayers();
         gamePlayersList.ClearEffectsAllPlayers();
         gamePlayersList.SetHealthMaxAllPlayers();
@@ -112,6 +121,7 @@ public class Main extends BukkitRunnable{
     private void FinishHunterWaitingTime() {
         gameState=GameState.IN_THE_GAME;
         timeLimit= (customTimeLimit.get()==0) ? (DEFAULT_TIME_LIMIT) : (customTimeLimit.get());
+        customTimeLimit.set(0);
         time=timeLimit;
         gamePlayersList.ClearPlayersInTeam(hunterTeam);
     }
