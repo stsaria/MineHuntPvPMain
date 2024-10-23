@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayersListUpdater implements Listener {
-    GamePlayersList gamePlayersList;
+    final GamePlayersList gamePlayersList;
     public PlayersListUpdater(GamePlayersList gamePlayersList) {
         this.gamePlayersList=gamePlayersList;
     }

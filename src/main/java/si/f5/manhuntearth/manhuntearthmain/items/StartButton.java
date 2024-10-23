@@ -5,7 +5,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import si.f5.manhuntearth.manhuntearthmain.Main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class StartButton extends GameItemButton {
@@ -21,7 +21,7 @@ public class StartButton extends GameItemButton {
 
     @Override
     List<String> LORE() {
-        return new ArrayList<String>(Arrays.asList("ゲームを開始します。"));
+        return new ArrayList<>(Collections.singletonList("ゲームを開始します。"));
     }
 
     @Override

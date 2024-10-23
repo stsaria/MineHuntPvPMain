@@ -13,7 +13,7 @@ import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
 import java.util.Objects;
 
 public abstract class Role {
-    Team bukkitTeam;
+    final Team bukkitTeam;
     public Role() {
         ScoreboardManager scoreboardManager= Bukkit.getScoreboardManager();
         Scoreboard scoreboard= Objects.requireNonNull(scoreboardManager).getMainScoreboard();

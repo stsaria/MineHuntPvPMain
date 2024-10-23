@@ -18,7 +18,7 @@ public class CarvedPumpkin extends GameItem{
 
     @Override
     List<String> LORE() {
-        return new ArrayList<String>(Arrays.asList("CURSE OF JACK"));
+        return new ArrayList<>(Collections.singletonList("CURSE OF JACK"));
     }
 
     @Override

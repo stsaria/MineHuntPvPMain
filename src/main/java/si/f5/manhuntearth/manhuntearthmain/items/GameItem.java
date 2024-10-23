@@ -7,6 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class GameItem{
@@ -18,9 +19,9 @@ public abstract class GameItem{
     public GameItem() {
         itemStack= new ItemStack(MATERIAL());
         ItemMeta itemMeta=itemStack.getItemMeta();
-        itemMeta.setDisplayName(NAME());
+        Objects.requireNonNull(itemMeta).setDisplayName(NAME());
         itemMeta.setLore(LORE());
-        ENCHANTMENT().ifPresent(m-> m.entrySet().forEach(e-> itemMeta.addEnchant(e.getKey(),e.getValue(),true)));
+        ENCHANTMENT().ifPresent(m-> m.forEach((key, value) -> itemMeta.addEnchant(key, value, true)));
         itemStack.setItemMeta(itemMeta);
     }
     public ItemStack GetItemStack() {

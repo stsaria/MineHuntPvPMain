@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import si.f5.manhuntearth.manhuntearthmain.GameState;
 
 public class debug_gamestateCommand implements CommandExecutor {
-    GameState gameState;
+    final GameState gameState;
     public debug_gamestateCommand(GameState gameState) {
         this.gameState=gameState;
     }

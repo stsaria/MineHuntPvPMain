@@ -12,10 +12,10 @@ import si.f5.manhuntearth.manhuntearthmain.roles.RunnerTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.SpectatorRole;
 
 public class VictoryJudge implements Listener {
-    GamePlayersList gamePlayersList;
-    HunterTeam hunterTeam;
-    RunnerTeam runnerTeam;
-    SpectatorRole spectatorRole;
+    final GamePlayersList gamePlayersList;
+    final HunterTeam hunterTeam;
+    final RunnerTeam runnerTeam;
+    final SpectatorRole spectatorRole;
     public VictoryJudge (GamePlayersList gamePlayersList, HunterTeam hunterTeam, RunnerTeam runnerTeam, SpectatorRole spectatorRole) {
         this.gamePlayersList=gamePlayersList;
         this.hunterTeam=hunterTeam;
@@ -24,7 +24,7 @@ public class VictoryJudge implements Listener {
     }
     private void GameOver(GameTeam winningTeam) {
         Main.StopFlag();
-        gamePlayersList.playersList.forEach(p-> spectatorRole.AddPlayer(p));
+        gamePlayersList.playersList.forEach(spectatorRole::AddPlayer);
         Bukkit.broadcastMessage(winningTeam.BUKKIT_TEAM_COLOR()+winningTeam.BUKKIT_TEAM_DISPLAY_NAME()+
                 "の勝利!");
     }

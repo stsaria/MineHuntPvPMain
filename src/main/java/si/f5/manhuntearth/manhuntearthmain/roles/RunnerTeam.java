@@ -1,7 +1,6 @@
 package si.f5.manhuntearth.manhuntearthmain.roles;
 
 import org.bukkit.ChatColor;
-import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 
 public class RunnerTeam extends GameTeam {
     @Override

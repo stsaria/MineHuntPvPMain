@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class GamePlayersList {
-    List<GamePlayer> playersList;
+    final List<GamePlayer> playersList;
     public GamePlayersList() {
         this.playersList = new ArrayList<>();
     }

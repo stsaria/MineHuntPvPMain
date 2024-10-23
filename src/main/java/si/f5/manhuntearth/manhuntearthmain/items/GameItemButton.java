@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class GameItemButton extends GameItem implements Listener {
@@ -17,7 +18,7 @@ public abstract class GameItemButton extends GameItem implements Listener {
     final int LEVEL_OF_ENCHANTMENT_FOR_IDENTIFICATION=100;
     public GameItemButton() {
         ItemMeta itemMeta = super.GetItemStack().getItemMeta();
-        itemMeta.addEnchant(ENCHANTMENT_FOR_IDENTIFICATION,LEVEL_OF_ENCHANTMENT_FOR_IDENTIFICATION,true);
+        Objects.requireNonNull(itemMeta).addEnchant(ENCHANTMENT_FOR_IDENTIFICATION,LEVEL_OF_ENCHANTMENT_FOR_IDENTIFICATION,true);
         itemMeta.addEnchant(Enchantment.VANISHING_CURSE,1,true);
         super.GetItemStack().setItemMeta(itemMeta);
     }
@@ -39,7 +40,7 @@ public abstract class GameItemButton extends GameItem implements Listener {
     }
     private boolean IsThisItem(ItemStack itemStack) {
         if(itemStack.getType() != this.MATERIAL()) return false;
-        if(!(itemStack.getItemMeta().getDisplayName().equals(this.NAME()))) return false;
+        if(!(Objects.requireNonNull(itemStack.getItemMeta()).getDisplayName().equals(this.NAME()))) return false;
         for(Map.Entry<Enchantment,Integer> entry:itemStack.getItemMeta().getEnchants().entrySet()) {
             if(entry.getKey().getKey().equals(ENCHANTMENT_FOR_IDENTIFICATION.getKey()) && entry.getValue()==LEVEL_OF_ENCHANTMENT_FOR_IDENTIFICATION) {
                 return true;

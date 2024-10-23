@@ -24,18 +24,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main extends BukkitRunnable{
-    HunterTeam hunterTeam;
-    RunnerTeam runnerTeam;
-    SpectatorRole spectatorRole;
-    GamePlayersList gamePlayersList;
-    JavaPlugin plugin;
+    final HunterTeam hunterTeam;
+    final RunnerTeam runnerTeam;
+    final SpectatorRole spectatorRole;
+    final GamePlayersList gamePlayersList;
+    final JavaPlugin plugin;
     private int time;
     private int timeLimit;
     private int hunterWaitingTime;
     private static GameState gameState;
-    StartButton startButton;
+    final StartButton startButton;
     BossBarTimer bossBarTimer;
-    VictoryJudge victoryJudge;
+    final VictoryJudge victoryJudge;
     private static final AtomicBoolean startFlag=new AtomicBoolean(false);
     private static final AtomicBoolean stopFlag=new AtomicBoolean(false);
     private static final AtomicBoolean resetFlag=new AtomicBoolean(false);
