@@ -1,18 +1,12 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_gamestateCommand;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_resetCommand;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_startCommand;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_stopCommand;
-import si.f5.manhuntearth.manhuntearthmain.items.CarvedPumpkin;
 import si.f5.manhuntearth.manhuntearthmain.items.StartButton;
 import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.Role;
@@ -44,7 +38,7 @@ public class Main extends BukkitRunnable{
     public static final int SECOND=20;
     public static final int MINUTES=60*SECOND;
     private static final int DEFAULT_TIME_LIMIT =30*MINUTES;
-    private static final int HUNTER_WAITING_TIME_LIMIT = 30*SECOND;
+    public static final int HUNTER_WAITING_TIME_LIMIT = 30*SECOND;
 
     public Main(JavaPlugin plugin) {
         this.plugin=plugin;
@@ -119,26 +113,7 @@ public class Main extends BukkitRunnable{
         allPlayersIntoHunterTeamFlag.set(false);
 
         gamePlayersList.InitializeAllPlayers();
-        hunterTeam.SetItemToHeadOfAllPlayers(new CarvedPumpkin());
-        Bukkit.getServer().getPluginManager().registerEvents(new Listener() {
-            @EventHandler
-            public void onHunterTriedMove(PlayerMoveEvent e) {
-                if(GetGameState()!=GameState.IN_HUNTER_WAITING_TIME) {
-                    return;
-                }
-                if(hunterTeam.DoesNotContain(e.getPlayer())) {
-                    return;
-                }
-                Location from = e.getFrom();
-                Location to = Objects.requireNonNull(e.getTo());
-                to.setX(from.getX());
-                to.setY(from.getY());
-                to.setZ(from.getZ());
-                e.setTo(to);
-            }
-        },plugin);
-        hunterTeam.AddEffectAllPlayers(PotionEffectType.BLINDNESS,HUNTER_WAITING_TIME_LIMIT,1,false);
-        hunterTeam.AddEffectAllPlayers(PotionEffectType.RESISTANCE,HUNTER_WAITING_TIME_LIMIT+(10*SECOND),255,false);
+        hunterTeam.StartWaiting(plugin);
         Bukkit.getWorlds().forEach(w-> {w.setTime(0);w.setStorm(false);w.setThundering(false);});
         hunterWaitingTime=HUNTER_WAITING_TIME_LIMIT;
         bossBarTimer = new BossBarTimer(gamePlayersList);
