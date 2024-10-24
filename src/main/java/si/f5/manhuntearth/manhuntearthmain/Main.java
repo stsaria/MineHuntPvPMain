@@ -118,10 +118,7 @@ public class Main extends BukkitRunnable{
         gamePlayersList.TeamDivide(hunterTeam,runnerTeam, allPlayersIntoHunterTeamFlag.get());
         allPlayersIntoHunterTeamFlag.set(false);
 
-        gamePlayersList.ClearALlPlayers();
-        gamePlayersList.ClearEffectsAllPlayers();
-        gamePlayersList.SetHealthMaxAllPlayers();
-        gamePlayersList.SetFoodLevelMaxAllPlayers();
+        gamePlayersList.InitializeAllPlayers();
         hunterTeam.SetItemToHeadOfAllPlayers(new CarvedPumpkin());
         Bukkit.getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler

@@ -37,16 +37,22 @@ public class GamePlayersList {
     public void SetItemToHostsInventory(GameItem item,int slot) {
         GetHost().ifPresent(v ->v.SetItem(item,slot));
     }
-    public void ClearALlPlayers() {
+    public void InitializeAllPlayers() {
+        ClearALlPlayers();
+        ClearEffectsAllPlayers();
+        SetHealthMaxAllPlayers();
+        SetFoodLevelMaxAllPlayers();
+    }
+    private void ClearALlPlayers() {
         playersList.forEach(GamePlayer::Clear);
     }
-    public void ClearEffectsAllPlayers() {
+    private void ClearEffectsAllPlayers() {
         playersList.forEach(GamePlayer::ClearEffects);
     }
-    public void SetHealthMaxAllPlayers() {
+    private void SetHealthMaxAllPlayers() {
         playersList.forEach(GamePlayer::SetHealthMax);
     }
-    public void SetFoodLevelMaxAllPlayers() {
+    private void SetFoodLevelMaxAllPlayers() {
         playersList.forEach(GamePlayer::SetFoodLevelMax);
     }
     public void TeamDivide(Role role1, Role role2, boolean allPlayersIntoRole1) {
