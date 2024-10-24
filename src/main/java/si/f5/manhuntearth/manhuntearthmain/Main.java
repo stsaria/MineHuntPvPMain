@@ -30,6 +30,7 @@ public class Main extends BukkitRunnable{
     final StartButton startButton;
     BossBarTimer bossBarTimer;
     final VictoryJudge victoryJudge;
+    final GameWorld gameWorld;
     private static final AtomicBoolean startFlag=new AtomicBoolean(false);
     private static final AtomicBoolean stopFlag=new AtomicBoolean(false);
     private static final AtomicBoolean resetFlag=new AtomicBoolean(false);
@@ -47,6 +48,7 @@ public class Main extends BukkitRunnable{
         runnerTeam = new RunnerTeam();
         spectatorRole = new SpectatorRole();
         gamePlayersList = new GamePlayersList();
+        gameWorld = new GameWorld();
         gameState=GameState.BEFORE_THE_GAME;
         victoryJudge = new VictoryJudge(gamePlayersList,hunterTeam,runnerTeam,spectatorRole);
         Bukkit.getServer().getPluginManager().registerEvents(victoryJudge,this.plugin);
@@ -114,7 +116,7 @@ public class Main extends BukkitRunnable{
 
         gamePlayersList.InitializeAllPlayers();
         hunterTeam.StartWaiting(plugin);
-        Bukkit.getWorlds().forEach(w-> {w.setTime(0);w.setStorm(false);w.setThundering(false);});
+        gameWorld.StartTheGame();
         hunterWaitingTime=HUNTER_WAITING_TIME_LIMIT;
         bossBarTimer = new BossBarTimer(gamePlayersList);
     }
