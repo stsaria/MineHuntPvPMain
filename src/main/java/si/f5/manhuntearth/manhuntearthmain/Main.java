@@ -144,14 +144,14 @@ public class Main extends BukkitRunnable{
         gamePlayersList.SetItemToHostsInventory(startButton,4);
     }
     private void InHunterWaitingTime() {
-        bossBarTimer.Update(HUNTER_WAITING_TIME_LIMIT,hunterWaitingTime,false);
+        bossBarTimer.Update(HUNTER_WAITING_TIME_LIMIT,hunterWaitingTime);
         hunterWaitingTime--;
         if(hunterWaitingTime<=0) {
             FinishHunterWaitingTime();
         }
     }
     private void InTheGame() {
-        bossBarTimer.Update(timeLimit,time, time % 100 == 0);
+        bossBarTimer.Update(timeLimit,time);
         time--;
         if(time<=0) {
             OnTimeIsUp();
