@@ -18,28 +18,26 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main extends BukkitRunnable{
-    final HunterTeam hunterTeam;
-    final RunnerTeam runnerTeam;
-    final SpectatorRole spectatorRole;
-    final GamePlayersList gamePlayersList;
-    final JavaPlugin plugin;
-    private int time;
-    private int timeLimit;
-    private int hunterWaitingTime;
+    private final HunterTeam hunterTeam;
+    private final RunnerTeam runnerTeam;
+    private final SpectatorRole spectatorRole;
+    private final GamePlayersList gamePlayersList;
+    private final JavaPlugin plugin;
+    private GameTime time;
+    private GameTime timeLimit;
+    private GameTime hunterWaitingTime;
+    private static final GameTime DEFAULT_TIME_LIMIT =new GameTime(30,0);
+    private static final GameTime HUNTER_WAITING_TIME_LIMIT = new GameTime(0,30);
     private static GameState gameState;
-    final StartButton startButton;
-    BossBarTimer bossBarTimer;
-    final VictoryJudge victoryJudge;
-    final GameWorld gameWorld;
+    private final StartButton startButton;
+    private BossBarTimer bossBarTimer;
+    private final VictoryJudge victoryJudge;
+    private final GameWorld gameWorld;
     private static final AtomicBoolean startFlag=new AtomicBoolean(false);
     private static final AtomicBoolean stopFlag=new AtomicBoolean(false);
     private static final AtomicBoolean resetFlag=new AtomicBoolean(false);
     private static final AtomicInteger customTimeLimit=new AtomicInteger(0);
     private static final AtomicBoolean allPlayersIntoHunterTeamFlag =new AtomicBoolean(false);
-    public static final int SECOND=20;
-    public static final int MINUTES=60*SECOND;
-    private static final int DEFAULT_TIME_LIMIT =30*MINUTES;
-    public static final int HUNTER_WAITING_TIME_LIMIT = 30*SECOND;
 
     public Main(JavaPlugin plugin) {
         this.plugin=plugin;
@@ -115,23 +113,23 @@ public class Main extends BukkitRunnable{
         allPlayersIntoHunterTeamFlag.set(false);
 
         gamePlayersList.InitializeAllPlayers();
-        hunterTeam.StartWaiting(plugin);
+        hunterTeam.StartWaiting(plugin,HUNTER_WAITING_TIME_LIMIT);
         gameWorld.StartTheGame();
         hunterWaitingTime=HUNTER_WAITING_TIME_LIMIT;
         bossBarTimer = new BossBarTimer(gamePlayersList);
     }
     private void FinishHunterWaitingTime() {
         gameState=GameState.IN_THE_GAME;
-        timeLimit= (customTimeLimit.get()==0) ? (DEFAULT_TIME_LIMIT) : (customTimeLimit.get());
+        timeLimit= (customTimeLimit.get()==0) ? (DEFAULT_TIME_LIMIT) : (new GameTime(customTimeLimit.get()));
         customTimeLimit.set(0);
-        time=timeLimit;
+        time=new GameTime(timeLimit);
         hunterTeam.ClearAllPlayersItems();
     }
     private void Stop() {
         stopFlag.set(false);
         gameState=GameState.AFTER_THE_GAME;
         timeLimit=DEFAULT_TIME_LIMIT;
-        time= timeLimit;
+        time= DEFAULT_TIME_LIMIT;
         bossBarTimer.Remove();
         Bukkit.broadcastMessage("終了");
     }
@@ -145,15 +143,15 @@ public class Main extends BukkitRunnable{
     }
     private void InHunterWaitingTime() {
         bossBarTimer.Update(HUNTER_WAITING_TIME_LIMIT,hunterWaitingTime);
-        hunterWaitingTime--;
-        if(hunterWaitingTime<=0) {
+        hunterWaitingTime = hunterWaitingTime.Decrement();
+        if(hunterWaitingTime.isZero()) {
             FinishHunterWaitingTime();
         }
     }
     private void InTheGame() {
         bossBarTimer.Update(timeLimit,time);
-        time--;
-        if(time<=0) {
+        time = time.Decrement();
+        if(time.isZero()) {
             OnTimeIsUp();
         }
     }

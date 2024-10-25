@@ -2,11 +2,17 @@ package si.f5.manhuntearth.manhuntearthmain;
 
 public class GameTime {
     private final int tick;
-    private final int SECOND=20;
-    private final int MINUTE =60*SECOND;
+    private static final int SECOND=20;
+    private static final int MINUTE =60*SECOND;
     public GameTime(final int tick) {
         if(tick<0) throw new IllegalArgumentException("0以上でなければいけません");
         this.tick=tick;
+    }
+    public GameTime(final int minutes,final int seconds) {
+        this(minutes*MINUTE+seconds*SECOND);
+    }
+    public GameTime(GameTime time) {
+        this(time.tick);
     }
     public GameTime Add(GameTime time) {
         return new GameTime(this.tick+ time.tick);
@@ -38,5 +44,16 @@ public class GameTime {
     }
     public boolean isZero() {
         return tick==0;
+    }
+    public int Tick() {
+        return tick;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if(o==this) return true;
+        if(o==null) return false;
+        if(!(o instanceof GameTime)) return false;
+        GameTime other = (GameTime) o;
+        return this.tick == other.tick;
     }
 }

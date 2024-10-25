@@ -33,8 +33,8 @@ public class GamePlayer {
     public void Clear() {
         getOnlinePlayer().ifPresent(p-> p.getInventory().clear());
     }
-    public void AddEffect(PotionEffectType type,int duration,int amplifier,boolean particles) {
-        getOnlinePlayer().ifPresent(p-> p.addPotionEffect(new PotionEffect(type,duration,amplifier,false,particles)));
+    public void AddEffect(PotionEffectType type,GameTime duration,int amplifier,boolean particles) {
+        getOnlinePlayer().ifPresent(p-> p.addPotionEffect(new PotionEffect(type,duration.Tick(),amplifier,false,particles)));
     }
     public void ClearEffects() {
         getOnlinePlayer().ifPresent(

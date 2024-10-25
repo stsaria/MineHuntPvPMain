@@ -14,11 +14,9 @@ public class BossBarTimer {
             gamePlayer.getOnlinePlayer().ifPresent(bossBar::addPlayer);
         }
     }
-    public void Update(int max,int now) {
-        bossBar.setProgress((double)now/(double)max);
-        int min=now/Main.MINUTES;
-        int sec=(now%Main.MINUTES)/Main.SECOND;
-        bossBar.setTitle((min<10?"0":"") + (min) + (":") + (sec<10?"0":"") + (sec));
+    public void Update(GameTime max,GameTime now) {
+        bossBar.setProgress(((double) now.Tick() /(double) max.Tick()));
+        bossBar.setTitle(now.Format());
     }
     public void Remove() {
         bossBar.removeAll();

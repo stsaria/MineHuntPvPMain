@@ -8,6 +8,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
+import si.f5.manhuntearth.manhuntearthmain.GameTime;
 import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
 
 import java.util.Objects;
@@ -40,7 +41,7 @@ public abstract class Role {
     final public void ClearAllPlayersItems() {
         bukkitTeam.getPlayers().forEach(p-> GamePlayer.New(p).Clear());
     }
-    final public void AddEffectAllPlayers(PotionEffectType type, int duration, int amplifier, boolean particles) {
+    final public void AddEffectAllPlayers(PotionEffectType type, GameTime duration, int amplifier, boolean particles) {
         bukkitTeam.getPlayers().forEach(p-> GamePlayer.New(p).AddEffect(type,duration,amplifier,particles));
     }
     final public boolean Contains(GamePlayer gamePlayer) {

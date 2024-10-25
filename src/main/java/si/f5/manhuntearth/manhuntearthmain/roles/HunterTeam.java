@@ -9,13 +9,14 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import si.f5.manhuntearth.manhuntearthmain.GameState;
+import si.f5.manhuntearth.manhuntearthmain.GameTime;
 import si.f5.manhuntearth.manhuntearthmain.Main;
 import si.f5.manhuntearth.manhuntearthmain.items.CarvedPumpkin;
 
 import java.util.Objects;
 
 public class HunterTeam extends GameTeam {
-    public void StartWaiting(Plugin plugin) {
+    public void StartWaiting(Plugin plugin,GameTime waitingTime) {
         SetItemToHeadOfAllPlayers(new CarvedPumpkin());
         Bukkit.getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler
@@ -34,8 +35,8 @@ public class HunterTeam extends GameTeam {
                 e.setTo(to);
             }
         },plugin);
-        AddEffectAllPlayers(PotionEffectType.BLINDNESS, Main.HUNTER_WAITING_TIME_LIMIT,1,false);
-        AddEffectAllPlayers(PotionEffectType.RESISTANCE,Main.HUNTER_WAITING_TIME_LIMIT+(10*Main.SECOND),255,false);
+        AddEffectAllPlayers(PotionEffectType.BLINDNESS,waitingTime,1,false);
+        AddEffectAllPlayers(PotionEffectType.RESISTANCE,waitingTime.Add(new GameTime(0,10)),255,false);
     }
     @Override
     String BUKKIT_TEAM_NAME() {
