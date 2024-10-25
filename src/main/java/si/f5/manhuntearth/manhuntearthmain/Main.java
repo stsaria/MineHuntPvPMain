@@ -48,7 +48,7 @@ public class Main extends BukkitRunnable{
         runnerTeam = new RunnerTeam();
         spectatorRole = new SpectatorRole();
         gamePlayersList = new GamePlayersList();
-        gameWorld = new GameWorld();
+        gameWorld = new GameWorld(plugin);
         gameState=GameState.BEFORE_THE_GAME;
         victoryJudge = new VictoryJudge(gamePlayersList,hunterTeam,runnerTeam,spectatorRole);
         Bukkit.getServer().getPluginManager().registerEvents(victoryJudge,this.plugin);

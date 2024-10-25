@@ -1,6 +1,7 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -62,6 +63,9 @@ public class GamePlayer {
     }
     public void SetGameMode(GameMode gameMode) {
         getOnlinePlayer().ifPresent(p-> p.setGameMode(gameMode));
+    }
+    public void Teleport(Location location) {
+        getOnlinePlayer().ifPresent(p-> p.teleport(location));
     }
     public String GetName() {
         return getBukkitPlayer().getName();
