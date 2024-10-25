@@ -6,6 +6,8 @@ import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
+import java.util.Optional;
+
 public class BossBarTimer {
     private final BossBar bossBar;
     public BossBarTimer(GamePlayersList gamePlayersList) {
@@ -14,9 +16,15 @@ public class BossBarTimer {
             gamePlayer.getOnlinePlayer().ifPresent(bossBar::addPlayer);
         }
     }
-    public void Update(GameTime max,GameTime now) {
+    public void Update(GameTime max, GameTime now, Optional<String> titlePrefix) {
         bossBar.setProgress(((double) now.Tick() /(double) max.Tick()));
-        bossBar.setTitle(now.Format());
+        StringBuilder title=new StringBuilder();
+        titlePrefix.ifPresent(tp-> {
+            title.append(tp);
+            title.append(" ");
+        });
+        title.append(now.Format());
+        bossBar.setTitle(title.toString());
     }
     public void Remove() {
         bossBar.removeAll();

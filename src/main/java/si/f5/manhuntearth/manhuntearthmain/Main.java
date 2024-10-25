@@ -14,6 +14,7 @@ import si.f5.manhuntearth.manhuntearthmain.roles.RunnerTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.SpectatorRole;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -140,14 +141,14 @@ public class Main extends BukkitRunnable{
         gamePlayersList.SetItemToHostsInventory(startButton,4);
     }
     private void InHunterWaitingTime() {
-        bossBarTimer.Update(HUNTER_WAITING_TIME_LIMIT,hunterWaitingTime);
+        bossBarTimer.Update(HUNTER_WAITING_TIME_LIMIT,hunterWaitingTime,Optional.of(hunterTeam.BUKKIT_TEAM_DISPLAY_NAME()+"の解放まで"));
         hunterWaitingTime = hunterWaitingTime.Decrement();
         if(hunterWaitingTime.isZero()) {
             FinishHunterWaitingTime();
         }
     }
     private void InTheGame() {
-        bossBarTimer.Update(timeLimit,time);
+        bossBarTimer.Update(timeLimit,time, Optional.empty());
         time = time.Decrement();
         if(time.isZero()) {
             OnTimeIsUp();
