@@ -10,6 +10,7 @@ public class PlayersListUpdater implements Listener {
     final GamePlayersList gamePlayersList;
     public PlayersListUpdater(GamePlayersList gamePlayersList) {
         this.gamePlayersList=gamePlayersList;
+        Refresh();
     }
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent e) {
@@ -19,7 +20,7 @@ public class PlayersListUpdater implements Listener {
     public void OnPlayerQuit(PlayerQuitEvent e) {
         gamePlayersList.RemovePlayer(e.getPlayer());
     }
-    public void Refresh() {
+    private void Refresh() {
         Bukkit.getOnlinePlayers().forEach(gamePlayersList::AddPlayer);
     }
 }

@@ -56,9 +56,7 @@ public class Main extends BukkitRunnable{
         Objects.requireNonNull(plugin.getCommand("debug_reset")).setExecutor(new debug_resetCommand());
         Objects.requireNonNull(plugin.getCommand("debug_gamestate")).setExecutor(new debug_gamestateCommand(gameState));
         startButton= new StartButton();
-        PlayersListUpdater playersListUpdater=new PlayersListUpdater(gamePlayersList);
-        playersListUpdater.Refresh();
-        Bukkit.getServer().getPluginManager().registerEvents(playersListUpdater,this.plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
         Bukkit.getServer().getPluginManager().registerEvents(startButton,this.plugin);
         runTaskTimer(plugin,0,0);
     }
