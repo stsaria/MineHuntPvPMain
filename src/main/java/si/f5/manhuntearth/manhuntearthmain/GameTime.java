@@ -1,5 +1,7 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
+import java.util.Objects;
+
 public class GameTime {
     private final int tick;
     private static final int SECOND=20;
@@ -55,5 +57,9 @@ public class GameTime {
         if(!(o instanceof GameTime)) return false;
         GameTime other = (GameTime) o;
         return this.tick == other.tick;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.tick);
     }
 }

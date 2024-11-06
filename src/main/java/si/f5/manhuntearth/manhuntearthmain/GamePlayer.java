@@ -49,11 +49,11 @@ public class GamePlayer {
         );
     }
     public void SetFoodLevelMax() {
-        getOnlinePlayer().ifPresent(p->
-            {
-                p.setFoodLevel(20);
-                p.setSaturation(20);
-            }
+        getOnlinePlayer().ifPresent(p ->
+                {
+                    p.setFoodLevel(20);
+                    p.setSaturation(20);
+                }
         );
     }
     public ItemStack GetItemInMainHand() {
@@ -66,6 +66,12 @@ public class GamePlayer {
     }
     public void Teleport(Location location) {
         getOnlinePlayer().ifPresent(p-> p.teleport(location));
+    }
+    public void SetCompassTarget(Location location) {
+        getOnlinePlayer().ifPresent(p->p.setCompassTarget(location));
+    }
+    public Location GetLocation() {
+        return getBukkitPlayer().getLocation();
     }
     public String GetName() {
         return getBukkitPlayer().getName();

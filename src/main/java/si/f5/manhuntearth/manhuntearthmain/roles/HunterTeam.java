@@ -12,11 +12,12 @@ import si.f5.manhuntearth.manhuntearthmain.GameState;
 import si.f5.manhuntearth.manhuntearthmain.GameTime;
 import si.f5.manhuntearth.manhuntearthmain.Main;
 import si.f5.manhuntearth.manhuntearthmain.items.CarvedPumpkin;
+import si.f5.manhuntearth.manhuntearthmain.items.TrackerCompass;
 
 import java.util.Objects;
 
 public class HunterTeam extends GameTeam {
-    public void StartWaiting(Plugin plugin,GameTime waitingTime) {
+    public void StartWaiting(Plugin plugin, GameTime waitingTime) {
         SetItemToHeadOfAllPlayers(new CarvedPumpkin());
         Bukkit.getServer().getPluginManager().registerEvents(new Listener() {
             @EventHandler

@@ -8,13 +8,13 @@ import si.f5.manhuntearth.manhuntearthmain.commands.debug_resetCommand;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_startCommand;
 import si.f5.manhuntearth.manhuntearthmain.commands.debug_stopCommand;
 import si.f5.manhuntearth.manhuntearthmain.items.StartButton;
+import si.f5.manhuntearth.manhuntearthmain.items.TrackerCompass;
 import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.Role;
 import si.f5.manhuntearth.manhuntearthmain.roles.RunnerTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.SpectatorRole;
 
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -29,8 +29,10 @@ public class Main extends BukkitRunnable{
     private GameTime hunterWaitingTime;
     private static final GameTime DEFAULT_TIME_LIMIT =new GameTime(30,0);
     private static final GameTime HUNTER_WAITING_TIME_LIMIT = new GameTime(0,30);
+    private final List<GameTime> trackerUpdateTime;
     private static GameState gameState;
     private final StartButton startButton;
+    private final TrackerCompass trackerCompass;
     private BossBarTimer bossBarTimer;
     private final VictoryJudge victoryJudge;
     private final GameWorld gameWorld;
@@ -42,23 +44,49 @@ public class Main extends BukkitRunnable{
 
     public Main(JavaPlugin plugin) {
         this.plugin=plugin;
+
         Role.RemoveAllTeams();
         hunterTeam = new HunterTeam();
         runnerTeam = new RunnerTeam();
         spectatorRole = new SpectatorRole();
+
         gamePlayersList = new GamePlayersList();
-        gameWorld = new GameWorld(plugin);
+        gameWorld = new GameWorld(this.plugin);
         gameState=GameState.BEFORE_THE_GAME;
         victoryJudge = new VictoryJudge(gamePlayersList,hunterTeam,runnerTeam,spectatorRole);
         Bukkit.getServer().getPluginManager().registerEvents(victoryJudge,this.plugin);
-        Bukkit.getServer().getPluginManager().registerEvents(new AutoShutdowner(),this.plugin);
+
         Objects.requireNonNull(plugin.getCommand("debug_start")).setExecutor(new debug_startCommand());
         Objects.requireNonNull(plugin.getCommand("debug_stop")).setExecutor(new debug_stopCommand());
         Objects.requireNonNull(plugin.getCommand("debug_reset")).setExecutor(new debug_resetCommand());
         Objects.requireNonNull(plugin.getCommand("debug_gamestate")).setExecutor(new debug_gamestateCommand(gameState));
+
         startButton= new StartButton();
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
         Bukkit.getServer().getPluginManager().registerEvents(startButton,this.plugin);
+        trackerCompass= new TrackerCompass();
+
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
+        Bukkit.getServer().getPluginManager().registerEvents(new AutoShutdowner(),this.plugin);
+
+        trackerUpdateTime=new ArrayList<>(Arrays.asList(
+                new GameTime(30,0),
+                new GameTime(25,0),
+                new GameTime(20,0),
+                new GameTime(17,0),
+                new GameTime(14,0),
+                new GameTime(11,0),
+                new GameTime(9,0),
+                new GameTime(7,0),
+                new GameTime(5,0),
+                new GameTime(4,0),
+                new GameTime(3,0),
+                new GameTime(2,30),
+                new GameTime(2,0),
+                new GameTime(1,30),
+                new GameTime(1,0),
+                new GameTime(0,30)
+        ));
+
         runTaskTimer(plugin,0,0);
     }
     public static GameState GetGameState() {
@@ -123,6 +151,7 @@ public class Main extends BukkitRunnable{
         customTimeLimit.set(0);
         time=new GameTime(timeLimit);
         hunterTeam.ClearAllPlayersItems();
+        hunterTeam.SetItemToAllPlayers(trackerCompass,0);
     }
     private void Stop() {
         stopFlag.set(false);
@@ -148,6 +177,7 @@ public class Main extends BukkitRunnable{
         }
     }
     private void InTheGame() {
+        trackerCompass.TryUpdate(hunterTeam,runnerTeam,trackerUpdateTime,time);
         bossBarTimer.Update(timeLimit,time, Optional.empty());
         time = time.Decrement();
         if(time.isZero()) {

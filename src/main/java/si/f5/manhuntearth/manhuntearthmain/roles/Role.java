@@ -11,6 +11,8 @@ import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 import si.f5.manhuntearth.manhuntearthmain.GameTime;
 import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class Role {
@@ -44,6 +46,9 @@ public abstract class Role {
     final public void AddEffectAllPlayers(PotionEffectType type, GameTime duration, int amplifier, boolean particles) {
         bukkitTeam.getPlayers().forEach(p-> GamePlayer.New(p).AddEffect(type,duration,amplifier,particles));
     }
+    final public void SendMessage(String message) {
+        bukkitTeam.getPlayers().forEach(p -> GamePlayer.New(p).SendMessage(message));
+    }
     final public boolean Contains(GamePlayer gamePlayer) {
         return Contains(gamePlayer.getBukkitPlayer());
     }
@@ -58,6 +63,14 @@ public abstract class Role {
     }
     final public int Size() {
         return bukkitTeam.getSize();
+    }
+    final public List<GamePlayer> GetGamePlayers() {
+        ArrayList<GamePlayer> gamePlayers= new ArrayList<>();
+        bukkitTeam.getPlayers().forEach(op-> gamePlayers.add(GamePlayer.New(op)));
+        return gamePlayers;
+    }
+    final public Team GetBukkitTeam() {
+        return bukkitTeam;
     }
     public static void RemoveAllTeams() {
         ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();

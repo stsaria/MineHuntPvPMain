@@ -19,7 +19,15 @@ public class GameWorld {
         Location highestBlock = bukkitOverWorld.getHighestBlockAt(0,0).getLocation();
         Location topOfHighestBlock= highestBlock.clone();
         topOfHighestBlock.setY(topOfHighestBlock.getY()+1);
-        highestBlock.getBlock().setType(Material.STONE);
+        for(int x=-1;x<=1;x++) {
+            for(int z=-1;z<=1;z++) {
+                Location loc =highestBlock.clone();
+                loc.setX(loc.getX()+x);
+                loc.setZ(loc.getZ()+z);
+                if(!loc.getBlock().isPassable()) continue;
+                loc.getBlock().setType(Material.STONE);
+            }
+        }
         bukkitOverWorld.setSpawnLocation(topOfHighestBlock);
         bukkitOverWorld.setGameRule(GameRule.SPAWN_RADIUS,0);
 
