@@ -38,6 +38,8 @@ public class GameWorld {
                 if(Objects.requireNonNull(e.getTo()).distance(bukkitOverWorld.getSpawnLocation())<20) return;
                 GamePlayer player = GamePlayer.New(e.getPlayer());
                 Location locToHoldBack = bukkitOverWorld.getSpawnLocation();
+                locToHoldBack.setX(locToHoldBack.getX()+0.5);
+                locToHoldBack.setZ(locToHoldBack.getZ()+0.5);
                 locToHoldBack.setYaw(e.getFrom().getYaw());
                 locToHoldBack.setPitch(e.getFrom().getPitch());
                 player.Teleport(locToHoldBack);
