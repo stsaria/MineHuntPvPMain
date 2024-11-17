@@ -25,9 +25,8 @@ public class Main extends BukkitRunnable{
     private final GamePlayersList gamePlayersList;
     private final JavaPlugin plugin;
     private GameTime time;
-    private GameTime timeLimit;
+    private static final GameTime TIME_LIMIT =new GameTime(30,0);
     private GameTime hunterWaitingTime;
-    private static final GameTime DEFAULT_TIME_LIMIT =new GameTime(30,0);
     private static final GameTime HUNTER_WAITING_TIME_LIMIT = new GameTime(0,30);
     private final List<GameTime> trackerUpdateTime;
     private static GameState gameState;
@@ -101,9 +100,6 @@ public class Main extends BukkitRunnable{
     public static void ResetFlag() {
         resetFlag.set(true);
     }
-    public static void CustomTimeLimit(int timeLimit) {
-        customTimeLimit.set(timeLimit);
-    }
     public static void AllPlayersIntoHunterTeamFlag(){
         allPlayersIntoHunterTeamFlag.set(true);
     }
@@ -147,17 +143,14 @@ public class Main extends BukkitRunnable{
     }
     private void FinishHunterWaitingTime() {
         gameState=GameState.IN_THE_GAME;
-        timeLimit= (customTimeLimit.get()==0) ? (DEFAULT_TIME_LIMIT) : (new GameTime(customTimeLimit.get()));
-        customTimeLimit.set(0);
-        time=new GameTime(timeLimit);
+        time=new GameTime(TIME_LIMIT);
         hunterTeam.ClearAllPlayersItems();
         hunterTeam.SetItemToAllPlayers(trackerCompass,0);
     }
     private void Stop() {
         stopFlag.set(false);
         gameState=GameState.AFTER_THE_GAME;
-        timeLimit=DEFAULT_TIME_LIMIT;
-        time= DEFAULT_TIME_LIMIT;
+        time= TIME_LIMIT;
         bossBarTimer.Remove();
         Bukkit.broadcastMessage("終了");
     }
@@ -178,7 +171,7 @@ public class Main extends BukkitRunnable{
     }
     private void InTheGame() {
         trackerCompass.TryUpdate(hunterTeam,runnerTeam,trackerUpdateTime,time);
-        bossBarTimer.Update(timeLimit,time, Optional.empty());
+        bossBarTimer.Update(TIME_LIMIT,time, Optional.empty());
         time = time.Decrement();
         if(time.isZero()) {
             OnTimeIsUp();

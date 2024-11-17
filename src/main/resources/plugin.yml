@@ -7,7 +7,7 @@ commands:
     description: Start the game forcibly for debug or test play.
     permission: manhuntearthmain.debug
     permission-message: You don't have a permission to use this command!
-    usage: /debug_start <second:int> <allPlayersIntoHunterTeam:boolean>
+    usage: /debug_start <allPlayersIntoHunterTeam:boolean>
   debug_stop:
     description: Stop the game forcibly for debug or test play.
     permission: manhuntearthmain.debug
