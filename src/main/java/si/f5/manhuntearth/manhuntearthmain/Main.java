@@ -38,7 +38,6 @@ public class Main extends BukkitRunnable{
     private static final AtomicBoolean startFlag=new AtomicBoolean(false);
     private static final AtomicBoolean stopFlag=new AtomicBoolean(false);
     private static final AtomicBoolean resetFlag=new AtomicBoolean(false);
-    private static final AtomicInteger customTimeLimit=new AtomicInteger(0);
     private static final AtomicBoolean allPlayersIntoHunterTeamFlag =new AtomicBoolean(false);
 
     public Main(JavaPlugin plugin) {
