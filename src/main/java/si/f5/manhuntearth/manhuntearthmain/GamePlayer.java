@@ -1,8 +1,8 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +24,13 @@ public class GamePlayer {
     public void SendMessage(String message) {
         getOnlinePlayer().ifPresent(p-> p.sendMessage(message));
     }
+    public void SendActionbarMessage(String message) {
+        getOnlinePlayer().ifPresent(p-> {
+            TextComponent component = new TextComponent();
+            component.setText(message);
+            p.spigot().sendMessage(ChatMessageType.ACTION_BAR,component);
+        });
+    }
     public void SetItem(GameItem item, int slot) {
         getOnlinePlayer().ifPresent(p-> p.getInventory().setItem(slot, item.GetItemStack()));
     }
@@ -32,6 +39,9 @@ public class GamePlayer {
     }
     public void Clear() {
         getOnlinePlayer().ifPresent(p-> p.getInventory().clear());
+    }
+    public void PlaySound(Sound sound,float volume,float pitch) {
+        getOnlinePlayer().ifPresent(p-> p.playSound(p,sound, SoundCategory.MASTER,volume,pitch));
     }
     public void AddEffect(PotionEffectType type,GameTime duration,int amplifier,boolean particles) {
         getOnlinePlayer().ifPresent(p-> p.addPotionEffect(new PotionEffect(type,duration.Tick(),amplifier,false,particles)));
