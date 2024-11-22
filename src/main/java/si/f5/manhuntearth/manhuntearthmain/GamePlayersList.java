@@ -1,5 +1,6 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
 import si.f5.manhuntearth.manhuntearthmain.roles.Role;
@@ -42,6 +43,9 @@ public class GamePlayersList {
         ClearEffectsAllPlayers();
         SetHealthMaxAllPlayers();
         SetFoodLevelMaxAllPlayers();
+    }
+    public void SetAllPlayersGameMode(GameMode gameMode) {
+        playersList.forEach(p -> p.SetGameMode(gameMode));
     }
     private void ClearALlPlayers() {
         playersList.forEach(GamePlayer::Clear);

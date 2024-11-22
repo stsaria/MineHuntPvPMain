@@ -1,5 +1,6 @@
 package si.f5.manhuntearth.manhuntearthmain.items;
 
+import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -7,6 +8,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 
 import java.util.Map;
@@ -16,11 +18,12 @@ import java.util.Optional;
 public abstract class GameItemButton extends GameItem implements Listener {
     final Enchantment ENCHANTMENT_FOR_IDENTIFICATION=Enchantment.UNBREAKING;
     final int LEVEL_OF_ENCHANTMENT_FOR_IDENTIFICATION=100;
-    public GameItemButton() {
+    public GameItemButton(JavaPlugin javaPlugin) {
         ItemMeta itemMeta = super.GetItemStack().getItemMeta();
         Objects.requireNonNull(itemMeta).addEnchant(ENCHANTMENT_FOR_IDENTIFICATION,LEVEL_OF_ENCHANTMENT_FOR_IDENTIFICATION,true);
         itemMeta.addEnchant(Enchantment.VANISHING_CURSE,1,true);
         super.GetItemStack().setItemMeta(itemMeta);
+        Bukkit.getServer().getPluginManager().registerEvents(this,javaPlugin);
     }
     @EventHandler
     public void OnInteract(PlayerInteractEvent e) {
