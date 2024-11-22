@@ -1,12 +1,11 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import si.f5.manhuntearth.manhuntearthmain.commands.debug_gamestateCommand;
-import si.f5.manhuntearth.manhuntearthmain.commands.debug_resetCommand;
-import si.f5.manhuntearth.manhuntearthmain.commands.debug_startCommand;
-import si.f5.manhuntearth.manhuntearthmain.commands.debug_stopCommand;
+import si.f5.manhuntearth.manhuntearthmain.commands.*;
+import si.f5.manhuntearth.manhuntearthmain.items.QuitButton;
 import si.f5.manhuntearth.manhuntearthmain.items.StartButton;
 import si.f5.manhuntearth.manhuntearthmain.items.TrackerCompass;
 import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
@@ -16,7 +15,6 @@ import si.f5.manhuntearth.manhuntearthmain.roles.SpectatorRole;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main extends BukkitRunnable{
     private final HunterTeam hunterTeam;
@@ -31,6 +29,7 @@ public class Main extends BukkitRunnable{
     private final List<GameTime> trackerUpdateTime;
     private static GameState gameState;
     private final StartButton startButton;
+    private final QuitButton quitButton;
     private final TrackerCompass trackerCompass;
     private BossBarTimer bossBarTimer;
     private final VictoryJudge victoryJudge;
@@ -58,9 +57,10 @@ public class Main extends BukkitRunnable{
         Objects.requireNonNull(plugin.getCommand("debug_stop")).setExecutor(new debug_stopCommand());
         Objects.requireNonNull(plugin.getCommand("debug_reset")).setExecutor(new debug_resetCommand());
         Objects.requireNonNull(plugin.getCommand("debug_gamestate")).setExecutor(new debug_gamestateCommand(gameState));
+        Objects.requireNonNull(plugin.getCommand("lobby")).setExecutor(new lobbyCommand());
 
-        startButton= new StartButton();
-        Bukkit.getServer().getPluginManager().registerEvents(startButton,this.plugin);
+        startButton= new StartButton(this.plugin);
+        quitButton= new QuitButton(this.plugin);
         trackerCompass= new TrackerCompass();
 
         Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
@@ -151,7 +151,10 @@ public class Main extends BukkitRunnable{
         gameState=GameState.AFTER_THE_GAME;
         time= TIME_LIMIT;
         bossBarTimer.Remove();
+        gamePlayersList.SetItemToAllPlayersInventory(quitButton,8);
+        gamePlayersList.SetAllPlayersGameMode(GameMode.CREATIVE);
         Bukkit.broadcastMessage("終了");
+        Bukkit.broadcastMessage("ホットバーの退出ボタンで退出できます。");
     }
     private void Reset() {
         resetFlag.set(false);
@@ -160,6 +163,7 @@ public class Main extends BukkitRunnable{
     }
     private void BeforeTheGame() {
         gamePlayersList.SetItemToHostsInventory(startButton,4);
+        gamePlayersList.SetItemToAllPlayersInventory(quitButton,8);
     }
     private void InHunterWaitingTime() {
         bossBarTimer.Update(HUNTER_WAITING_TIME_LIMIT,hunterWaitingTime,Optional.of(hunterTeam.BUKKIT_TEAM_DISPLAY_NAME()+"の解放まで"));

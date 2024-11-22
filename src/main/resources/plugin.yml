@@ -20,6 +20,8 @@ commands:
     description: Show GameState for debug or test play.
     permission: manhuntearthmain.debug
     permission-message: You don't have a permission to use this command!
+  lobby:
+    description: ゲームを退出します。
 
 permissions:
   manhuntearthmain.debug:
