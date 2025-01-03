@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +38,18 @@ public abstract class GameItemButton extends GameItem implements Listener {
     @EventHandler
     public void OnDrop(PlayerDropItemEvent e) {
         if(IsThisItem(e.getItemDrop().getItemStack())) {
+            e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void OnInventoryClick(InventoryClickEvent e) {
+        if(IsThisItem(e.getCurrentItem())) {
+            e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void OnSwapHand(PlayerSwapHandItemsEvent e) {
+        if(IsThisItem(e.getMainHandItem()) || IsThisItem(e.getOffHandItem())) {
             e.setCancelled(true);
         }
     }
