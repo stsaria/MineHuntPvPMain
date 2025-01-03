@@ -1,9 +1,9 @@
 package si.f5.manhuntearth.manhuntearthmain.items;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 import si.f5.manhuntearth.manhuntearthmain.GameTime;
 import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
@@ -32,16 +32,25 @@ public class TrackerCompass extends GameItem {
         return Optional.empty();
     }
 
-    public void TryUpdate(HunterTeam hunterTeam,RunnerTeam runnerTeam,List<GameTime> updateTime,GameTime now) {
+    public void TryUpdate(HunterTeam hunterTeam, RunnerTeam runnerTeam, List<GameTime> updateTime, GameTime now, World overWorld,Plugin plugin) {
         if(updateTime.contains(now)) {
             if(updateTime.indexOf(now) == (updateTime.size()-1)) {
-                Update(hunterTeam,runnerTeam,Optional.empty());
+                Update(hunterTeam,runnerTeam,Optional.empty(),overWorld,plugin);
             } else {
-                Update(hunterTeam,runnerTeam,Optional.of(updateTime.get(updateTime.indexOf(now)+1)));
+                Update(hunterTeam,runnerTeam,Optional.of(updateTime.get(updateTime.indexOf(now)+1)),overWorld,plugin);
             }
         }
     }
-    private void Update(HunterTeam hunterTeam, RunnerTeam runnerTeam, Optional<GameTime> nextUpdate) {
+    private void Update(HunterTeam hunterTeam, RunnerTeam runnerTeam, Optional<GameTime> nextUpdate, World overWorld, Plugin plugin) {
+        hunterTeam.PlaySound(Sound.BLOCK_BELL_RESONATE,1,1);
+        runnerTeam.PlaySound(Sound.BLOCK_BELL_RESONATE,1,1);
+        overWorld.getWorldBorder().setWarningDistance(1000000);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                overWorld.getWorldBorder().setWarningDistance(0);
+            }
+        }.runTaskLater(plugin,new GameTime(0,3).Tick());
         hunterTeam.SendMessage(NAME()+"の位置情報が更新された...");
         runnerTeam.SendMessage(hunterTeam.BUKKIT_TEAM_DISPLAY_NAME()+"に位置情報が送信された...");
         if(nextUpdate.isPresent()) {

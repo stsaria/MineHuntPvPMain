@@ -3,6 +3,7 @@ package si.f5.manhuntearth.manhuntearthmain.roles;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -48,6 +49,9 @@ public abstract class Role {
     }
     final public void SendMessage(String message) {
         bukkitTeam.getPlayers().forEach(p -> GamePlayer.New(p).SendMessage(message));
+    }
+    final public void PlaySound(Sound sound, float volume, float pitch) {
+        bukkitTeam.getPlayers().forEach(p-> GamePlayer.New(p).PlaySound(sound,volume,pitch));
     }
     final public boolean Contains(GamePlayer gamePlayer) {
         return Contains(gamePlayer.getBukkitPlayer());

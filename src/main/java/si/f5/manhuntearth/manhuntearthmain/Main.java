@@ -25,7 +25,7 @@ public class Main extends BukkitRunnable{
     private GameTime time;
     private static final GameTime TIME_LIMIT =new GameTime(30,0);
     private GameTime hunterWaitingTime;
-    private static final GameTime HUNTER_WAITING_TIME_LIMIT = new GameTime(0,30);
+    public static final GameTime HUNTER_WAITING_TIME_LIMIT = new GameTime(0,30);
     private final List<GameTime> trackerUpdateTime;
     private static GameState gameState;
     private final StartButton startButton;
@@ -173,7 +173,7 @@ public class Main extends BukkitRunnable{
         }
     }
     private void InTheGame() {
-        trackerCompass.TryUpdate(hunterTeam,runnerTeam,trackerUpdateTime,time);
+        trackerCompass.TryUpdate(hunterTeam,runnerTeam,trackerUpdateTime,time, gameWorld.GetOverWorld(), plugin);
         bossBarTimer.Update(TIME_LIMIT,time, Optional.empty());
         time = time.Decrement();
         if(time.isZero()) {
