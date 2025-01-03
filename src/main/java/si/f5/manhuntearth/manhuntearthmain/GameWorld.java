@@ -11,12 +11,14 @@ import java.util.Objects;
 public class GameWorld {
     final private World bukkitOverWorld;
     private final int WORLD_BORDER_DIAMETER=2048;
+    public static int WORLD_SPAWN_X = 0;
+    public static int WORLD_SPAWN_Z = 0;
     public GameWorld(final Plugin plugin) {
         bukkitOverWorld=Bukkit.getWorlds().stream().filter(world -> world.getEnvironment() == World.Environment.NORMAL).findFirst().get();
-        bukkitOverWorld.getWorldBorder().setCenter(new Location(bukkitOverWorld,0,0,0));
+        bukkitOverWorld.getWorldBorder().setCenter(new Location(bukkitOverWorld,WORLD_SPAWN_X,0,WORLD_SPAWN_Z));
         bukkitOverWorld.getWorldBorder().setSize(WORLD_BORDER_DIAMETER);
 
-        Location highestBlock = bukkitOverWorld.getHighestBlockAt(0,0).getLocation();
+        Location highestBlock = bukkitOverWorld.getHighestBlockAt(WORLD_SPAWN_X,WORLD_SPAWN_Z).getLocation();
         Location topOfHighestBlock= highestBlock.clone();
         topOfHighestBlock.setY(topOfHighestBlock.getY()+1);
         for(int x=-1;x<=1;x++) {
