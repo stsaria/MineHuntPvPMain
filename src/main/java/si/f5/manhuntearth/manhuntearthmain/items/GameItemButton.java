@@ -30,6 +30,7 @@ public abstract class GameItemButton extends GameItem implements Listener {
         if(!(hasThisItemInMainHand(new GamePlayer(e.getPlayer())))) {
             return;
         }
+        e.setCancelled(true);
         Process(e);
     }
     @EventHandler
