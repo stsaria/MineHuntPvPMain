@@ -11,6 +11,7 @@ public class Director {
 
     }
     public void start(World bukkitOverWorld, GameTeam... teams) {
+        Bukkit.broadcastMessage("ゲーム開始");
         bukkitOverWorld.playSound(bukkitOverWorld.getSpawnLocation(), Sound.MUSIC_DISC_PIGSTEP, SoundCategory.MASTER,3,1);
         bukkitOverWorld.playSound(bukkitOverWorld.getSpawnLocation(),Sound.ITEM_GOAT_HORN_SOUND_2,3,1);
         for(GameTeam team:teams) {
