@@ -43,6 +43,9 @@ public class GamePlayer {
     public void PlaySound(Sound sound,float volume,float pitch) {
         getOnlinePlayer().ifPresent(p-> p.playSound(p,sound, SoundCategory.MASTER,volume,pitch));
     }
+    public void ShowTitle(String title,String subTitle,GameTime fadeIn,GameTime stay,GameTime fadeOut) {
+        getOnlinePlayer().ifPresent(p-> p.sendTitle(title,subTitle,fadeIn.Tick(),stay.Tick(),fadeOut.Tick()));
+    }
     public void AddEffect(PotionEffectType type,GameTime duration,int amplifier,boolean particles) {
         getOnlinePlayer().ifPresent(p-> p.addPotionEffect(new PotionEffect(type,duration.Tick(),amplifier,false,particles)));
     }

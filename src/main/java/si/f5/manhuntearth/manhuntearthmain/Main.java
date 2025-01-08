@@ -34,6 +34,7 @@ public class Main extends BukkitRunnable{
     private BossBarTimer bossBarTimer;
     private final VictoryJudge victoryJudge;
     private final GameWorld gameWorld;
+    private final Director director = new Director();
     private static final AtomicBoolean startFlag=new AtomicBoolean(false);
     private static final AtomicBoolean stopFlag=new AtomicBoolean(false);
     private static final AtomicBoolean resetFlag=new AtomicBoolean(false);
@@ -130,13 +131,13 @@ public class Main extends BukkitRunnable{
     private void Start() {
         startFlag.set(false);
         gameState=GameState.IN_HUNTER_WAITING_TIME;
-        Bukkit.broadcastMessage("スタート");
         gamePlayersList.TeamDivide(hunterTeam,runnerTeam, allPlayersIntoHunterTeamFlag.get());
         allPlayersIntoHunterTeamFlag.set(false);
 
         gamePlayersList.InitializeAllPlayers();
         hunterTeam.StartWaiting(plugin,HUNTER_WAITING_TIME_LIMIT);
         gameWorld.StartTheGame();
+        director.start(gameWorld.GetOverWorld(),hunterTeam,runnerTeam);
         hunterWaitingTime=HUNTER_WAITING_TIME_LIMIT;
         bossBarTimer = new BossBarTimer(gamePlayersList);
     }

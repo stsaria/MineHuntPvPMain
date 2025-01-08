@@ -59,4 +59,19 @@ public class HunterTeam extends GameTeam {
     public String BUKKIT_TEAM_DISPLAY_NAME() {
         return "鬼";
     }
+
+    @Override
+    public String titleOnStartDirection() {
+        return "追いかけろ";
+    }
+
+    @Override
+    public String subtitleOnStartDirection() {
+        return BUKKIT_TEAM_COLOR()+"鬼になった 開放まで待て";
+    }
+
+    @Override
+    public String[] winConditions() {
+        return new String[]{"時間切れ","逃走者全員が死ぬ(全員を倒す)"};
+    }
 }

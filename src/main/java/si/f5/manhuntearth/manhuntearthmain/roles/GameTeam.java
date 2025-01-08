@@ -6,7 +6,9 @@ import si.f5.manhuntearth.manhuntearthmain.GamePlayer;
 public abstract class GameTeam extends Role{
     @Override
     void OnPlayerAdded(GamePlayer addedPlayer) {
-        addedPlayer.SendMessage(BUKKIT_TEAM_COLOR()+BUKKIT_TEAM_DISPLAY_NAME()+"になりました。");
         addedPlayer.SetGameMode(GameMode.SURVIVAL);
     }
+    public abstract String titleOnStartDirection();
+    public abstract String subtitleOnStartDirection();
+    public abstract String[] winConditions();
 }

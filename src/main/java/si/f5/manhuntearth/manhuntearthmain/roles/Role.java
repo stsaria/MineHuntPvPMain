@@ -53,6 +53,9 @@ public abstract class Role {
     final public void PlaySound(Sound sound, float volume, float pitch) {
         bukkitTeam.getPlayers().forEach(p-> GamePlayer.New(p).PlaySound(sound,volume,pitch));
     }
+    final public void ShowTitle(String title, String subTitle, GameTime fadeIn, GameTime stay, GameTime fadeOut) {
+        bukkitTeam.getPlayers().forEach(p-> GamePlayer.New(p).ShowTitle(title,subTitle,fadeIn,stay,fadeOut));
+    }
     final public boolean Contains(GamePlayer gamePlayer) {
         return Contains(gamePlayer.getBukkitPlayer());
     }
