@@ -1,6 +1,7 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,18 +24,44 @@ public class VictoryJudge implements Listener {
         this.runnerTeam=runnerTeam;
         this.spectatorRole=spectatorRole;
     }
-    private void GameOver(GameTeam winningTeam) {
+    private void GameOver(GameTeam winningTeam,GameTeam losingTeam,GameOverReason gameOverReason) {
         Main.StopFlag();
-        gamePlayersList.playersList.forEach(spectatorRole::AddPlayer);
         Bukkit.broadcastMessage(winningTeam.BUKKIT_TEAM_COLOR()+winningTeam.BUKKIT_TEAM_DISPLAY_NAME()+
                 "の勝利!");
+        winningTeam.PlaySound(Sound.UI_TOAST_CHALLENGE_COMPLETE,1,1);
+        losingTeam.PlaySound(Sound.ITEM_TRIDENT_THUNDER,1,1);
+        spectatorRole.PlaySound(Sound.BLOCK_NOTE_BLOCK_BIT,1,1);
+        String winningTeamSubTitle = "";
+        String losingTeamSubTitle = "";
+        String spectatorSubTitle = "";
+        switch (gameOverReason){
+            case ANNIHILATION:
+                winningTeamSubTitle=ChatColor.GOLD+losingTeam.BUKKIT_TEAM_DISPLAY_NAME()+"が全滅した！";
+                losingTeamSubTitle=ChatColor.DARK_RED+"全滅してしまった...";
+                spectatorSubTitle=winningTeam.BUKKIT_TEAM_COLOR()+losingTeam.BUKKIT_TEAM_DISPLAY_NAME()+"が全滅した！";
+                break;
+            case TIME_UP:
+                winningTeamSubTitle=ChatColor.GOLD+"時間切れになった！";
+                losingTeamSubTitle=ChatColor.DARK_RED+"時間切れになってしまった...";
+                spectatorSubTitle=winningTeam.BUKKIT_TEAM_COLOR()+"時間切れになった！";
+                break;
+            case RUNNER_ESCAPE_TO_NETHER:
+                winningTeamSubTitle=ChatColor.GOLD+"脱出した！";
+                losingTeamSubTitle=ChatColor.DARK_RED+winningTeam.BUKKIT_TEAM_DISPLAY_NAME()+"が脱出してしまった...";
+                spectatorSubTitle=winningTeam.BUKKIT_TEAM_COLOR()+winningTeam.BUKKIT_TEAM_DISPLAY_NAME()+"が脱出した！";
+                break;
+        }
+        winningTeam.ShowTitle("勝利",winningTeamSubTitle,new GameTime(0,1),new GameTime(0,3),new GameTime(0,1));
+        losingTeam.ShowTitle("敗北",losingTeamSubTitle,new GameTime(0,1),new GameTime(0,3),new GameTime(0,1));
+        spectatorRole.ShowTitle(winningTeam.BUKKIT_TEAM_DISPLAY_NAME()+"の勝利",spectatorSubTitle,new GameTime(0,1),new GameTime(0,3),new GameTime(0,1));
+        gamePlayersList.playersList.forEach(spectatorRole::AddPlayer);
     }
     @EventHandler
     public void onRunnerEntersPortal(PlayerPortalEvent e) {
         if(Main.GetGameState()==GameState.IN_THE_GAME){
             e.setCancelled(true);
             if(runnerTeam.Contains(e.getPlayer())){
-                GameOver(runnerTeam);
+                GameOver(runnerTeam,hunterTeam,GameOverReason.RUNNER_ESCAPE_TO_NETHER);
             }
         }
     }
@@ -57,16 +84,19 @@ public class VictoryJudge implements Listener {
         }
     }
     public void onTimeIsUp() {
-        GameOver(hunterTeam);
+        GameOver(hunterTeam,runnerTeam,GameOverReason.TIME_UP);
     }
     private void onDecreaseInPlayers(GamePlayer gamePlayer) {
         gamePlayersList.PlaySound(Sound.ENTITY_ENDER_DRAGON_HURT,1,0.5f);
         spectatorRole.AddPlayer(gamePlayer);
         if(hunterTeam.Size()==0) {
-            GameOver(runnerTeam);
+            GameOver(runnerTeam,hunterTeam,GameOverReason.ANNIHILATION);
         }
         else if(runnerTeam.Size()==0) {
-            GameOver(hunterTeam);
+            GameOver(hunterTeam,runnerTeam,GameOverReason.ANNIHILATION);
         }
     }
+}
+enum GameOverReason {
+    TIME_UP,ANNIHILATION,RUNNER_ESCAPE_TO_NETHER
 }
