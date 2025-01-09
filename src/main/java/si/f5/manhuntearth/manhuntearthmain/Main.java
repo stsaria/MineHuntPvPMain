@@ -135,8 +135,8 @@ public class Main extends BukkitRunnable{
         allPlayersIntoHunterTeamFlag.set(false);
 
         gamePlayersList.InitializeAllPlayers();
-        hunterTeam.StartWaiting(plugin,HUNTER_WAITING_TIME_LIMIT);
         gameWorld.StartTheGame();
+        hunterTeam.StartWaiting(plugin,HUNTER_WAITING_TIME_LIMIT);
         director.start(gameWorld.GetOverWorld(),hunterTeam,runnerTeam);
         hunterWaitingTime=HUNTER_WAITING_TIME_LIMIT;
         bossBarTimer = new BossBarTimer(gamePlayersList);
