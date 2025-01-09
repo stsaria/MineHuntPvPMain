@@ -65,7 +65,7 @@ public class GameWorld {
         bukkitOverWorld.setTime(0);
         bukkitOverWorld.setStorm(false);
         bukkitOverWorld.setThundering(false);
-        Bukkit.getOnlinePlayers().forEach(player -> GamePlayer.New(player).Teleport(GetOverWorld().getSpawnLocation()));
+        Bukkit.getOnlinePlayers().forEach(player -> GamePlayer.New(player).Teleport(GetOverWorld().getSpawnLocation().add(0.5,0,0.5)));
     }
     public World GetOverWorld() {
         return bukkitOverWorld;
