@@ -28,7 +28,6 @@ public class HunterTeam extends GameTeam {
                 Location from = e.getFrom();
                 Location to = Objects.requireNonNull(e.getTo());
                 to.setX(from.getX());
-                to.setY(from.getY());
                 to.setZ(from.getZ());
                 e.setTo(to);
             }
