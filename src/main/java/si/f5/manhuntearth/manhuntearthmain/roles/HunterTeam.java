@@ -29,11 +29,13 @@ public class HunterTeam extends GameTeam {
             @EventHandler
             public void onHunterTriedMove(PlayerMoveEvent e) {
                 if(Main.GetGameState()!= GameState.IN_HUNTER_WAITING_TIME) {
+                    e.getPlayer().setAllowFlight(false);
                     return;
                 }
                 if(DoesNotContain(e.getPlayer())) {
                     return;
                 }
+                e.getPlayer().setAllowFlight(true);
                 Location from = e.getFrom();
                 Location to = Objects.requireNonNull(e.getTo());
                 to.setX(from.getX());
