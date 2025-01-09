@@ -1,6 +1,7 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -39,18 +40,27 @@ public class VictoryJudge implements Listener {
     }
     @EventHandler
     public void onPlayerBelongsToEitherTeamQuit(PlayerQuitEvent e) {
-        if(Main.GetGameState()==GameState.IN_THE_GAME)
+        if(Main.GetGameState()==GameState.IN_THE_GAME) {
+            if(hunterTeam.Contains(e.getPlayer())&&hunterTeam.Size()!=1) {
+                e.setQuitMessage(e.getQuitMessage()+"\n"+hunterTeam.BUKKIT_TEAM_COLOR()+hunterTeam.BUKKIT_TEAM_DISPLAY_NAME()+"は残り"+hunterTeam.Size()+"人");
+            }
+            if(runnerTeam.Contains(e.getPlayer())&&runnerTeam.Size()!=1) {
+                e.setQuitMessage(e.getQuitMessage()+"\n"+runnerTeam.BUKKIT_TEAM_COLOR()+runnerTeam.BUKKIT_TEAM_DISPLAY_NAME()+"は残り"+hunterTeam.Size()+"人");
+            }
             onDecreaseInPlayers(new GamePlayer(e.getPlayer()));
+        }
     }
     @EventHandler
     public void onPlayerBelongsToEitherTeamDie(PlayerDeathEvent e) {
-        if(Main.GetGameState()==GameState.IN_THE_GAME)
+        if(Main.GetGameState()==GameState.IN_THE_GAME) {
             onDecreaseInPlayers(new GamePlayer(e.getEntity()));
+        }
     }
     public void onTimeIsUp() {
         GameOver(hunterTeam);
     }
     private void onDecreaseInPlayers(GamePlayer gamePlayer) {
+        gamePlayersList.PlaySound(Sound.ENTITY_ENDER_DRAGON_HURT,1,0.5f);
         spectatorRole.AddPlayer(gamePlayer);
         if(hunterTeam.Size()==0) {
             GameOver(runnerTeam);
