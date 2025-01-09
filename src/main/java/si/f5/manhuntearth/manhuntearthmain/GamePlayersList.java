@@ -1,6 +1,7 @@
 package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import si.f5.manhuntearth.manhuntearthmain.items.GameItem;
 import si.f5.manhuntearth.manhuntearthmain.roles.Role;
@@ -37,6 +38,9 @@ public class GamePlayersList {
     }
     public void SetItemToHostsInventory(GameItem item,int slot) {
         GetHost().ifPresent(v ->v.SetItem(item,slot));
+    }
+    public void PlaySound(Sound sound, float volume, float pitch) {
+        playersList.forEach(gamePlayer -> gamePlayer.PlaySound(sound, volume, pitch));
     }
     public void InitializeAllPlayers() {
         ClearALlPlayers();

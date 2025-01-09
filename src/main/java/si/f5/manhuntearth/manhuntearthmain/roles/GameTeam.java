@@ -11,4 +11,6 @@ public abstract class GameTeam extends Role{
     public abstract String titleOnStartDirection();
     public abstract String subtitleOnStartDirection();
     public abstract String[] winConditions();
+    public abstract String titleOnReleaseHunter();
+    public abstract String subtitleOnReleaseHunter();
 }

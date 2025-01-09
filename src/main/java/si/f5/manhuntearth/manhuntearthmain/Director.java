@@ -22,4 +22,11 @@ public class Director {
             }
         }
     }
+    public void releaseHunter(GamePlayersList gamePlayersList, GameTeam... teams) {
+        Bukkit.broadcastMessage("鬼が開放された...");
+        gamePlayersList.PlaySound(Sound.EVENT_MOB_EFFECT_RAID_OMEN,1,1);
+        for(GameTeam team:teams) {
+            team.ShowTitle(team.titleOnReleaseHunter(),team.subtitleOnReleaseHunter(),new GameTime(0,1),new GameTime(0,3),new GameTime(0,1));
+        }
+    }
 }

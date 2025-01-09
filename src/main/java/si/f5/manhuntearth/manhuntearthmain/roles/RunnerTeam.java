@@ -32,4 +32,14 @@ public class RunnerTeam extends GameTeam {
     public String[] winConditions() {
         return new String[]{"ネザーゲートから脱出","鬼全員が死ぬ(全員を倒す)"};
     }
+
+    @Override
+    public String titleOnReleaseHunter() {
+        return "鬼が開放された";
+    }
+
+    @Override
+    public String subtitleOnReleaseHunter() {
+        return BUKKIT_TEAM_COLOR()+"鬼の追跡から逃れネザーゲートから脱出せよ";
+    }
 }

@@ -74,4 +74,14 @@ public class HunterTeam extends GameTeam {
     public String[] winConditions() {
         return new String[]{"時間切れ","逃走者全員が死ぬ(全員を倒す)"};
     }
+
+    @Override
+    public String titleOnReleaseHunter() {
+        return "開放された";
+    }
+
+    @Override
+    public String subtitleOnReleaseHunter() {
+        return BUKKIT_TEAM_COLOR()+"逃走者を追え";
+    }
 }
