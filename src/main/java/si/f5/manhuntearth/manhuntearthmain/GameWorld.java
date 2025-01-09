@@ -3,6 +3,8 @@ package si.f5.manhuntearth.manhuntearthmain;
 import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -47,6 +49,15 @@ public class GameWorld {
                 player.Teleport(locToHoldBack);
                 player.SendActionbarMessage(ChatColor.RED+"開始前はこれ以上初期スポーンから離れられません！");
                 player.PlaySound(Sound.ENTITY_ENDERMAN_TELEPORT,1f,0.5f);
+            }
+        },plugin);
+        Bukkit.getPluginManager().registerEvents(new Listener() {
+            @EventHandler
+            public void preventsBlockUnderHunterBreak(BlockBreakEvent e) {
+                if(Main.GetGameState()!=GameState.IN_HUNTER_WAITING_TIME) return;
+                if(highestBlock.equals(e.getBlock().getLocation())){
+                    e.setCancelled(true);
+                }
             }
         },plugin);
     }
