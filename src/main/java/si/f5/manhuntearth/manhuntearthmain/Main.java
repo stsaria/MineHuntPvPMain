@@ -2,19 +2,21 @@ package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import si.f5.manhuntearth.manhuntearthmain.commands.*;
-import si.f5.manhuntearth.manhuntearthmain.items.QuitButton;
-import si.f5.manhuntearth.manhuntearthmain.items.StartButton;
 import si.f5.manhuntearth.manhuntearthmain.items.TrackerCompass;
 import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.Role;
 import si.f5.manhuntearth.manhuntearthmain.roles.RunnerTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.SpectatorRole;
 
+import javax.swing.plaf.TableHeaderUI;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
 
 public class Main extends BukkitRunnable{
     private final HunterTeam hunterTeam;
@@ -28,14 +30,12 @@ public class Main extends BukkitRunnable{
     public static final GameTime HUNTER_WAITING_TIME_LIMIT = new GameTime(0,30);
     private final List<GameTime> trackerUpdateTime;
     private static GameState gameState;
-    private final StartButton startButton;
-    private final QuitButton quitButton;
     private final TrackerCompass trackerCompass;
     private BossBarTimer bossBarTimer;
     private final VictoryJudge victoryJudge;
     private final GameWorld gameWorld;
     private final Director director = new Director();
-    private static final AtomicBoolean startFlag=new AtomicBoolean(false);
+    private static final AtomicBoolean startFlag=new AtomicBoolean(true);
     private static final AtomicBoolean stopFlag=new AtomicBoolean(false);
     private static final AtomicBoolean resetFlag=new AtomicBoolean(false);
     private static final AtomicBoolean allPlayersIntoHunterTeamFlag =new AtomicBoolean(false);
@@ -60,8 +60,6 @@ public class Main extends BukkitRunnable{
         Objects.requireNonNull(plugin.getCommand("debug_gamestate")).setExecutor(new debug_gamestateCommand(gameState));
         Objects.requireNonNull(plugin.getCommand("lobby")).setExecutor(new lobbyCommand());
 
-        startButton= new StartButton(this.plugin);
-        quitButton= new QuitButton(this.plugin);
         trackerCompass= new TrackerCompass();
 
         Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
@@ -107,7 +105,11 @@ public class Main extends BukkitRunnable{
     @Override
     public void run() {
         if(startFlag.get()) {
-            Start();
+            try {
+                Start();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         else if(stopFlag.get()) {
             Stop();
@@ -128,18 +130,40 @@ public class Main extends BukkitRunnable{
             AfterTheGame();
         }
     }
-    private void Start() {
+    private void Start() throws InterruptedException {
         startFlag.set(false);
-        gameState=GameState.IN_HUNTER_WAITING_TIME;
-        gamePlayersList.TeamDivide(hunterTeam,runnerTeam, allPlayersIntoHunterTeamFlag.get());
-        allPlayersIntoHunterTeamFlag.set(false);
+        Main tHis = this;
+        CompletableFuture.supplyAsync(() -> {
+            try{
+                while (true){
+                    if (!Bukkit.getOnlinePlayers().isEmpty()){
+                        break;
+                    }
+                }
+                for (int i = 0; i < 15; i++){
+                    for (Player player : Bukkit.getOnlinePlayers()){
+                        player.sendTitle(""+String.valueOf(15-i-1), null);
+                    }
+                    Thread.sleep(1000);
+                }
+            } catch (Exception e) {
+                this.plugin.getLogger().log(Level.SEVERE, e.toString());
+            }
+            return true;
+        }).thenAcceptAsync(result -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                gameState=GameState.IN_HUNTER_WAITING_TIME;
+                gamePlayersList.TeamDivide(hunterTeam,runnerTeam, allPlayersIntoHunterTeamFlag.get());
+                allPlayersIntoHunterTeamFlag.set(false);
 
-        gamePlayersList.InitializeAllPlayers();
-        gameWorld.StartTheGame();
-        hunterTeam.StartWaiting(plugin,HUNTER_WAITING_TIME_LIMIT);
-        director.start(gameWorld.GetOverWorld(),hunterTeam,runnerTeam);
-        hunterWaitingTime=HUNTER_WAITING_TIME_LIMIT;
-        bossBarTimer = new BossBarTimer(gamePlayersList);
+                gamePlayersList.InitializeAllPlayers();
+                gameWorld.StartTheGame();
+                hunterTeam.StartWaiting(plugin,HUNTER_WAITING_TIME_LIMIT);
+                director.start(gameWorld.GetOverWorld(),hunterTeam,runnerTeam);
+                hunterWaitingTime=HUNTER_WAITING_TIME_LIMIT;
+                bossBarTimer = new BossBarTimer(gamePlayersList);
+            });
+        });
     }
     private void FinishHunterWaitingTime() {
         gameState=GameState.IN_THE_GAME;
@@ -153,10 +177,29 @@ public class Main extends BukkitRunnable{
         gameState=GameState.AFTER_THE_GAME;
         time= TIME_LIMIT;
         bossBarTimer.Remove();
-        gamePlayersList.SetItemToAllPlayersInventory(quitButton,8);
         gamePlayersList.SetAllPlayersGameMode(GameMode.CREATIVE);
-        Bukkit.broadcastMessage("終了");
-        Bukkit.broadcastMessage("ホットバーの退出ボタンで退出できます。");
+        Bukkit.broadcastMessage("終了\n\n10秒後にサーバーが停止します");
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(10000);
+            } catch (Exception e) {
+                this.plugin.getLogger().log(Level.SEVERE, e.toString());
+            }
+            for (Player player : Bukkit.getOnlinePlayers()){
+                BungeeCorder.moveServer(plugin, player, "manhuntLobby");
+            }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            Bukkit.getServer().shutdown();
+            return null;
+        }).thenAcceptAsync(result -> {
+            Bukkit.getScheduler().runTask(plugin, () -> {
+
+            });
+        });
     }
     private void Reset() {
         resetFlag.set(false);
@@ -164,8 +207,8 @@ public class Main extends BukkitRunnable{
         Bukkit.broadcastMessage("リセット");
     }
     private void BeforeTheGame() {
-        gamePlayersList.SetItemToHostsInventory(startButton,4);
-        gamePlayersList.SetItemToAllPlayersInventory(quitButton,8);
+        // gamePlayersList.SetItemToHostsInventory(startButton,4);
+        // gamePlayersList.SetItemToAllPlayersInventory(quitButton,8);
     }
     private void InHunterWaitingTime() {
         bossBarTimer.Update(HUNTER_WAITING_TIME_LIMIT,hunterWaitingTime,Optional.of(hunterTeam.BUKKIT_TEAM_DISPLAY_NAME()+"の解放まで"));
