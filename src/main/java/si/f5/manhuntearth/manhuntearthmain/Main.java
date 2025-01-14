@@ -105,11 +105,7 @@ public class Main extends BukkitRunnable{
     @Override
     public void run() {
         if(startFlag.get()) {
-            try {
-                Start();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            Start();
         }
         else if(stopFlag.get()) {
             Stop();
@@ -130,19 +126,25 @@ public class Main extends BukkitRunnable{
             AfterTheGame();
         }
     }
-    private void Start() throws InterruptedException {
+    private void Start(){
         startFlag.set(false);
-        Main tHis = this;
         CompletableFuture.supplyAsync(() -> {
             try{
-                while (true){
+                int i = 0;
+                while (i < 60){
                     if (!Bukkit.getOnlinePlayers().isEmpty()){
                         break;
                     }
+                    Thread.sleep(1000);
+                    i++;
                 }
-                for (int i = 0; i < 15; i++){
+                if (i >= 60 && Bukkit.getOnlinePlayers().isEmpty()){
+                    Bukkit.getServer().shutdown();
+                    return false;
+                }
+                for (i = 0; i < 15; i++){
                     for (Player player : Bukkit.getOnlinePlayers()){
-                        player.sendTitle(""+String.valueOf(15-i-1), null);
+                        player.sendTitle(String.valueOf(15-i-1), null);
                     }
                     Thread.sleep(1000);
                 }
