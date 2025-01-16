@@ -7,12 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import si.f5.manhuntearth.manhuntearthmain.commands.*;
 import si.f5.manhuntearth.manhuntearthmain.items.TrackerCompass;
-import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
-import si.f5.manhuntearth.manhuntearthmain.roles.Role;
-import si.f5.manhuntearth.manhuntearthmain.roles.RunnerTeam;
-import si.f5.manhuntearth.manhuntearthmain.roles.SpectatorRole;
+import si.f5.manhuntearth.manhuntearthmain.roles.*;
 
-import javax.swing.plaf.TableHeaderUI;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -221,6 +217,7 @@ public class Main extends BukkitRunnable{
     }
     private void InTheGame() {
         trackerCompass.TryUpdate(hunterTeam,runnerTeam,trackerUpdateTime,time, gameWorld.GetOverWorld(), plugin);
+        AlliesLocationsActionBar.update(hunterTeam, runnerTeam);
         bossBarTimer.Update(TIME_LIMIT,time, Optional.empty());
         time = time.Decrement();
         if(time.isZero()) {

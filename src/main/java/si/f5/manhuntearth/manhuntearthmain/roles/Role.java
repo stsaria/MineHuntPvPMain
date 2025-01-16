@@ -22,7 +22,7 @@ public abstract class Role {
         ScoreboardManager scoreboardManager= Bukkit.getScoreboardManager();
         Scoreboard scoreboard= Objects.requireNonNull(scoreboardManager).getMainScoreboard();
         bukkitTeam=scoreboard.registerNewTeam(BUKKIT_TEAM_NAME());
-        bukkitTeam.setAllowFriendlyFire(true);
+        bukkitTeam.setAllowFriendlyFire(false);
         bukkitTeam.setCanSeeFriendlyInvisibles(true);
         bukkitTeam.setColor(BUKKIT_TEAM_COLOR());
         bukkitTeam.setDisplayName(BUKKIT_TEAM_DISPLAY_NAME());
