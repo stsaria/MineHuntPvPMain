@@ -59,7 +59,6 @@ public class Main extends BukkitRunnable{
         trackerCompass= new TrackerCompass();
 
         Bukkit.getServer().getPluginManager().registerEvents(new PlayersListUpdater(gamePlayersList),this.plugin);
-        Bukkit.getServer().getPluginManager().registerEvents(new AutoShutdowner(),this.plugin);
 
         trackerUpdateTime=new ArrayList<>(Arrays.asList(
                 new GameTime(30,0),

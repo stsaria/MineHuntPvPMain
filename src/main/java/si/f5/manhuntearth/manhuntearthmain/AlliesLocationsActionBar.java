@@ -2,17 +2,11 @@ package si.f5.manhuntearth.manhuntearthmain;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 import si.f5.manhuntearth.manhuntearthmain.roles.GameTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.HunterTeam;
 import si.f5.manhuntearth.manhuntearthmain.roles.RunnerTeam;
-
-import java.util.Objects;
 
 
 public class AlliesLocationsActionBar {
@@ -28,7 +22,7 @@ public class AlliesLocationsActionBar {
             for (GamePlayer gamePlayer : team.GetGamePlayers()){
                 player = (Player) gamePlayer.getBukkitPlayer();
                 location = player.getLocation();
-                locationsStringBuilder.append(player.getName()+":"+location.getBlockX()+", "+location.getBlockY()+", "+location.getBlockZ()+" / ");
+                locationsStringBuilder.append(player.getName()).append(":").append(location.getBlockX()).append(", ").append(location.getBlockY()).append(", ").append(location.getBlockZ()).append(" / ");
             }
             locationsStringBuilder.delete(locationsStringBuilder.length()-4, locationsStringBuilder.length()-1);
             for (GamePlayer gamePlayer : team.GetGamePlayers()){
