@@ -2,7 +2,10 @@ package si.f5.manhuntearth.manhuntearthmain;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import si.f5.manhuntearth.manhuntearthmain.commands.*;
@@ -229,5 +232,17 @@ public class Main extends BukkitRunnable{
     private void OnTimeIsUp() {
         victoryJudge.onTimeIsUp();
         StopFlag();
+    }
+
+    @EventHandler
+    public void onKill(PlayerDeathEvent e){
+        Player killer = e.getEntity().getKiller();
+        if (killer == null){
+            return;
+        }
+        double halfHealth = Objects.requireNonNull(killer.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getDefaultValue() / 2d;
+        if (halfHealth > killer.getHealth()){
+            killer.setHealth(halfHealth);
+        }
     }
 }
