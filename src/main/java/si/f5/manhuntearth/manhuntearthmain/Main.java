@@ -139,7 +139,7 @@ public class Main extends BukkitRunnable{
                 }
                 for (i = 0; i < 15; i++){
                     for (Player player : Bukkit.getOnlinePlayers()){
-                        player.sendTitle(String.valueOf(15-i-1), null);
+                        player.sendTitle(String.valueOf(14-i), null);
                     }
                     Thread.sleep(1000);
                 }
@@ -167,6 +167,7 @@ public class Main extends BukkitRunnable{
         time=new GameTime(TIME_LIMIT);
         hunterTeam.ClearAllPlayersItems();
         hunterTeam.SetItemToAllPlayers(trackerCompass,0);
+        hunterTeam.giveEquipment();
         director.releaseHunter(gamePlayersList,hunterTeam,runnerTeam);
     }
     private void Stop() {

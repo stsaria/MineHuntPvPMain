@@ -24,7 +24,7 @@ public class AlliesLocationsActionBar {
                 location = player.getLocation();
                 locationsStringBuilder.append(player.getName()).append(":").append(location.getBlockX()).append(", ").append(location.getBlockY()).append(", ").append(location.getBlockZ()).append(" / ");
             }
-            locationsStringBuilder.delete(locationsStringBuilder.length()-4, locationsStringBuilder.length()-1);
+            locationsStringBuilder.delete(locationsStringBuilder.length()-3, locationsStringBuilder.length()-1);
             for (GamePlayer gamePlayer : team.GetGamePlayers()){
                 player = (Player) gamePlayer.getBukkitPlayer();
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(locationsStringBuilder.toString().replace(" "+player.getName()+":", " §e"+player.getName()+"§r:")));

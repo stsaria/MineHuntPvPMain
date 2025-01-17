@@ -3,9 +3,13 @@ package si.f5.manhuntearth.manhuntearthmain.roles;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import si.f5.manhuntearth.manhuntearthmain.*;
@@ -14,6 +18,22 @@ import si.f5.manhuntearth.manhuntearthmain.items.CarvedPumpkin;
 import java.util.Objects;
 
 public class HunterTeam extends GameTeam {
+    public void giveEquipment(){
+        Player player;
+        ItemStack[] giveItemStacks = {
+                new ItemStack(Material.WOODEN_AXE),
+                new ItemStack(Material.WOODEN_PICKAXE),
+                new ItemStack(Material.BREAD, 3),
+                new ItemStack(Material.LEATHER_HELMET),
+                new ItemStack(Material.LEATHER_CHESTPLATE),
+                new ItemStack(Material.LEATHER_LEGGINGS),
+                new ItemStack(Material.LEATHER_BOOTS)
+        };
+        for (GamePlayer gamePlayer : this.GetGamePlayers()){
+            player = (Player) gamePlayer.getBukkitPlayer();
+            player.getInventory().addItem(giveItemStacks);
+        }
+    }
     public void StartWaiting(Plugin plugin, GameTime waitingTime) {
         SetItemToHeadOfAllPlayers(new CarvedPumpkin());
         Bukkit.getServer().getPluginManager().registerEvents(new Listener() {
