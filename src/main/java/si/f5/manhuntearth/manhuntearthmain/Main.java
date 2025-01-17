@@ -233,16 +233,4 @@ public class Main extends BukkitRunnable{
         victoryJudge.onTimeIsUp();
         StopFlag();
     }
-
-    @EventHandler
-    public void onKill(PlayerDeathEvent e){
-        Player killer = e.getEntity().getKiller();
-        if (killer == null){
-            return;
-        }
-        double halfHealth = Objects.requireNonNull(killer.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getDefaultValue() / 2d;
-        if (halfHealth > killer.getHealth()){
-            killer.setHealth(halfHealth);
-        }
-    }
 }
